@@ -1,0 +1,3 @@
+/home/jakobolsson/repos/green-elevators/cmake-build-debug/CMakeFiles/green_elevators.dir
+/home/jakobolsson/repos/green-elevators/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/jakobolsson/repos/green-elevators/cmake-build-debug/CMakeFiles/rebuild_cache.dir

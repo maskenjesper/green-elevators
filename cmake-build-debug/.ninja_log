@@ -1,0 +1,24 @@
+# ninja log v5
+1	290	1677858764114635157	CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o	6546995dadbdf015
+1	305	1677858639676329931	CMakeFiles/green_elevators.dir/workers/EventReceiver.cpp.o	a6704c5cacbad9aa
+1	72	1677707959641052407	CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o	a02fbe6336d2a70d
+0	30	1677860473188057561	build.ninja	1ae8fbb0b7f5f4f6
+1	282	1677858764105635207	CMakeFiles/green_elevators.dir/main.cpp.o	74bd2b252acefad6
+290	372	1677858764195634705	green_elevators	957bcfba4eb116ed
+2	25	1677858639395331499	CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o	83160ea60cc2d0a5
+3	61	1677707535298212316	CMakeFiles/green_elevators.dir/utils/hardwareAPI.c.o	5a11e43628127b81
+2	24	1677864083648416454	CMakeFiles/green_elevators.dir/structures/Action.cpp.o	2c2725f91ca02b06
+3	305	1677864083929414901	CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o	6546995dadbdf015
+2	324	1677864083948414796	CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o	594a5872b68c7be8
+1	376	1677864084000414509	CMakeFiles/green_elevators.dir/main.cpp.o	74bd2b252acefad6
+1	165	1677864120722211620	CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o	83160ea60cc2d0a5
+165	259	1677864120816211101	green_elevators	e2a7896d045d54bb
+1	313	1677864154163026859	CMakeFiles/green_elevators.dir/main.cpp.o	74bd2b252acefad6
+313	402	1677864154250026378	green_elevators	e2a7896d045d54bb
+1	299	1677864222504649270	CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o	594a5872b68c7be8
+1	304	1677864222509649243	CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o	6546995dadbdf015
+304	393	1677864222597648756	green_elevators	e2a7896d045d54bb
+1	326	1677864823769407676	CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o	6546995dadbdf015
+1	360	1677864823803408209	CMakeFiles/green_elevators.dir/main.cpp.o	74bd2b252acefad6
+1	288	1677865196056018842	CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o	594a5872b68c7be8
+288	373	1677865196140018378	green_elevators	e2a7896d045d54bb
