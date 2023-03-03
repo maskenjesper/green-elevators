@@ -61,6 +61,30 @@ build CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o: CXX_COMPILER__gree
   OBJECT_DIR = CMakeFiles/green_elevators.dir
   OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/utils
 
+build CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/workers/CommandReceiver.cpp || cmake_object_order_depends_target_green_elevators
+  DEP_FILE = CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/green_elevators.dir
+  OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/workers
+
+build CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/workers/CommandSender.cpp || cmake_object_order_depends_target_green_elevators
+  DEP_FILE = CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/green_elevators.dir
+  OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/workers
+
+build CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/structures/ActionQueue.cpp || cmake_object_order_depends_target_green_elevators
+  DEP_FILE = CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/green_elevators.dir
+  OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/structures
+
+build CMakeFiles/green_elevators.dir/structures/Action.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/structures/Action.cpp || cmake_object_order_depends_target_green_elevators
+  DEP_FILE = CMakeFiles/green_elevators.dir/structures/Action.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/green_elevators.dir
+  OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/structures
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target green_elevators
@@ -69,7 +93,7 @@ build CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o: CXX_COMPILER__gree
 #############################################
 # Link the executable green_elevators
 
-build green_elevators: CXX_EXECUTABLE_LINKER__green_elevators_Debug CMakeFiles/green_elevators.dir/main.cpp.o CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o
+build green_elevators: CXX_EXECUTABLE_LINKER__green_elevators_Debug CMakeFiles/green_elevators.dir/main.cpp.o CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o CMakeFiles/green_elevators.dir/structures/Action.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/green_elevators.dir
   POST_BUILD = :
