@@ -1,4 +1,4 @@
-/app/extra/clion/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/app/extra/clion/bin/ninja/linux/ninja -G Ninja -S /home/jakobolsson/repos/green-elevators -B /home/jakobolsson/repos/green-elevators/cmake-build-debug
+/home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/kali/Downloads/clion-2022.3.2/bin/ninja/linux/x64/ninja -G Ninja -S /home/kali/Desktop/green_elevator_github_project/green-elevators -B /home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/jakobolsson/repos/green-elevators/cmake-build-debug
+-- Build files have been written to: /home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug

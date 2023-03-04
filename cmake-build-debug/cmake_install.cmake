@@ -1,4 +1,4 @@
-# Install script for directory: /home/jakobolsson/repos/green-elevators
+# Install script for directory: /home/kali/Desktop/green_elevator_github_project/green-elevators
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -29,7 +29,7 @@ endif()
 
 # Install shared libraries without execute permission?
 if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "0")
+  set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
 # Is this installation the result of a crosscompile?
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/jakobolsson/repos/green-elevators/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

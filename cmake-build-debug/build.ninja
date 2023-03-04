@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/jakobolsson/repos/green-elevators/cmake-build-debug/
+cmake_ninja_workdir = /home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target green_elevators
 
@@ -49,37 +49,37 @@ cmake_ninja_workdir = /home/jakobolsson/repos/green-elevators/cmake-build-debug/
 
 build cmake_object_order_depends_target_green_elevators: phony || CMakeFiles/green_elevators.dir
 
-build CMakeFiles/green_elevators.dir/main.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/main.cpp || cmake_object_order_depends_target_green_elevators
+build CMakeFiles/green_elevators.dir/main.cpp.o: CXX_COMPILER__green_elevators_Debug /home/kali/Desktop/green_elevator_github_project/green-elevators/main.cpp || cmake_object_order_depends_target_green_elevators
   DEP_FILE = CMakeFiles/green_elevators.dir/main.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/green_elevators.dir
   OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir
 
-build CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/utils/hardwareAPI.cpp || cmake_object_order_depends_target_green_elevators
+build CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o: CXX_COMPILER__green_elevators_Debug /home/kali/Desktop/green_elevator_github_project/green-elevators/utils/hardwareAPI.cpp || cmake_object_order_depends_target_green_elevators
   DEP_FILE = CMakeFiles/green_elevators.dir/utils/hardwareAPI.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/green_elevators.dir
   OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/utils
 
-build CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/workers/CommandReceiver.cpp || cmake_object_order_depends_target_green_elevators
+build CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o: CXX_COMPILER__green_elevators_Debug /home/kali/Desktop/green_elevator_github_project/green-elevators/workers/CommandReceiver.cpp || cmake_object_order_depends_target_green_elevators
   DEP_FILE = CMakeFiles/green_elevators.dir/workers/CommandReceiver.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/green_elevators.dir
   OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/workers
 
-build CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/workers/CommandSender.cpp || cmake_object_order_depends_target_green_elevators
+build CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o: CXX_COMPILER__green_elevators_Debug /home/kali/Desktop/green_elevator_github_project/green-elevators/workers/CommandSender.cpp || cmake_object_order_depends_target_green_elevators
   DEP_FILE = CMakeFiles/green_elevators.dir/workers/CommandSender.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/green_elevators.dir
   OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/workers
 
-build CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/structures/ActionQueue.cpp || cmake_object_order_depends_target_green_elevators
+build CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o: CXX_COMPILER__green_elevators_Debug /home/kali/Desktop/green_elevator_github_project/green-elevators/structures/ActionQueue.cpp || cmake_object_order_depends_target_green_elevators
   DEP_FILE = CMakeFiles/green_elevators.dir/structures/ActionQueue.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/green_elevators.dir
   OBJECT_FILE_DIR = CMakeFiles/green_elevators.dir/structures
 
-build CMakeFiles/green_elevators.dir/structures/Action.cpp.o: CXX_COMPILER__green_elevators_Debug /home/jakobolsson/repos/green-elevators/structures/Action.cpp || cmake_object_order_depends_target_green_elevators
+build CMakeFiles/green_elevators.dir/structures/Action.cpp.o: CXX_COMPILER__green_elevators_Debug /home/kali/Desktop/green_elevator_github_project/green-elevators/structures/Action.cpp || cmake_object_order_depends_target_green_elevators
   DEP_FILE = CMakeFiles/green_elevators.dir/structures/Action.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/green_elevators.dir
@@ -106,7 +106,7 @@ build green_elevators: CXX_EXECUTABLE_LINKER__green_elevators_Debug CMakeFiles/g
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/jakobolsson/repos/green-elevators/cmake-build-debug && /app/extra/clion/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug && /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -117,7 +117,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/jakobolsson/repos/green-elevators/cmake-build-debug && /app/extra/clion/bin/cmake/linux/bin/cmake --regenerate-during-build -S/home/jakobolsson/repos/green-elevators -B/home/jakobolsson/repos/green-elevators/cmake-build-debug
+  COMMAND = cd /home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug && /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S/home/kali/Desktop/green_elevator_github_project/green-elevators -B/home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -133,7 +133,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /home/jakobolsson/repos/green-elevators/cmake-build-debug
+# Folder: /home/kali/Desktop/green_elevator_github_project/green-elevators/cmake-build-debug
 
 build all: phony green_elevators
 
@@ -144,14 +144,14 @@ build all: phony green_elevators
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /home/jakobolsson/repos/green-elevators/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | /home/kali/Desktop/green_elevator_github_project/green-elevators/CMakeLists.txt /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux.cmake /app/extra/clion/bin/cmake/linux/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /home/jakobolsson/repos/green-elevators/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
+build /home/kali/Desktop/green_elevator_github_project/green-elevators/CMakeLists.txt /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux.cmake /home/kali/Downloads/clion-2022.3.2/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
 
 
 #############################################
