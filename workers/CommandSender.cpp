@@ -1,6 +1,7 @@
 #include "CommandSender.h"
 
-pthread_t CommandSender::init() {
+pthread_t CommandSender::init(ActionQueue actionQueue) {
+    CommandSender::actionQueue = actionQueue;
     pthread_t tid;
     pthread_create(&tid, NULL, worker, NULL);
     return tid;
