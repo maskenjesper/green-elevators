@@ -8,10 +8,12 @@
 int main() {
     initHW((char*) "127.0.0.1", 4711);
 
-//    ActionQueue actionQueue = ActionQueue();
+    ActionQueue actionQueue = ActionQueue();
 
-    pthread_t er = CommandReceiver::init();
-    pthread_t cs = CommandSender::init();
+    // Starts the command receiver thread
+    pthread_t er = CommandReceiver::init(actionQueue);
+    // Starts the command sender thread
+    pthread_t cs = CommandSender::init(actionQueue);
 
     pthread_join(er, NULL);
     pthread_join(cs, NULL);
