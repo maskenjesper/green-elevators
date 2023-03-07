@@ -1,6 +1,8 @@
 #include "CommandReceiver.h"
 
-pthread_t CommandReceiver::init(ActionQueue actionQueue) {
+ActionQueue *CommandReceiver::actionQueue;
+
+pthread_t CommandReceiver::init(ActionQueue *actionQueue) {
     CommandReceiver::actionQueue = actionQueue;
     pthread_t tid;
     pthread_create(&tid, NULL, worker, NULL);
@@ -15,7 +17,7 @@ void *CommandReceiver::worker(void *) {
         switch (eventType) {
             case FloorButton:
                 eventName = "Floor Button";
-                actionQueue.add(Action(eventDesc.fbp.floor,
+                actionQueue->add(new Action(eventDesc.fbp.floor,
                                            0,
                                            eventDesc.fbp.type == GoingUp ?
                                                 Action::UP : Action::DOWN,
@@ -23,7 +25,7 @@ void *CommandReceiver::worker(void *) {
                 break;
             case CabinButton:
                 eventName = "Cabin Button";
-                actionQueue.add(Action(eventDesc.cbp.floor,
+                actionQueue->add(new Action(eventDesc.cbp.floor,
                                            eventDesc.cbp.cabin,
                                            Action::NONE,
                                            Action::DROPOFF));

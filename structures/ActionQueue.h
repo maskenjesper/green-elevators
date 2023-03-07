@@ -7,19 +7,21 @@
 
 #include <vector>
 #include <pthread.h>
+#include <stdexcept>
 
 #include "Action.h"
 
 class ActionQueue {
     private:
-        std::vector<Action> queue;
+        std::vector<Action*> queue;
         pthread_mutex_t queue_lock;
 
     public:
         ActionQueue();
-        void add(Action action);
+        void add(Action *action);
         void remove();
-        Action peek();
+        Action *peek();
+        int size();
 };
 
 
