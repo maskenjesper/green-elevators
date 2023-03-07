@@ -15,11 +15,12 @@
 
 class CommandSender {
 private:
-    static ActionQueue actionQueue;
     static void *worker(void *);
+    CommandSender();
 
 public:
-    static pthread_t init(ActionQueue actionQueue);
+    static ActionQueue *actionQueue;
+    static pthread_t init(ActionQueue *actionQueue);
 };
 
 #endif //GREEN_ELEVATORS_COMMANDSENDER_H

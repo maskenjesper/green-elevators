@@ -9,11 +9,12 @@
 
 class CommandReceiver {
 private:
-    static ActionQueue actionQueue;
     static void *worker(void *);
 
+
 public:
-    static pthread_t init(ActionQueue actionQueue);
+    static ActionQueue *actionQueue;
+    static pthread_t init(ActionQueue *actionQueue);
 };
 
 #endif //GREEN_ELEVATORS_COMMANDRECEIVER_H

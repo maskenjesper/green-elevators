@@ -1,6 +1,8 @@
 #include "CommandSender.h"
 
-pthread_t CommandSender::init(ActionQueue actionQueue) {
+ActionQueue *CommandSender::actionQueue;
+
+pthread_t CommandSender::init(ActionQueue *actionQueue) {
     CommandSender::actionQueue = actionQueue;
     pthread_t tid;
     pthread_create(&tid, NULL, worker, NULL);
@@ -9,7 +11,12 @@ pthread_t CommandSender::init(ActionQueue actionQueue) {
 
 void *CommandSender::worker(void *) {
     while (true) {
-        std::cout << "event sender" << std::endl;
+        try {
+            std::cout << "event sender: " << actionQueue->size() << " " << actionQueue->peek()->getElevator() << std::endl;
+        }
+        catch (std::out_of_range e) {
+            std::cout << "empty" << std::endl;
+        }
         sleep(5);
     }
 }
