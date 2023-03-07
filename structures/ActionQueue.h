@@ -12,16 +12,17 @@
 #include "Action.h"
 
 class ActionQueue {
-    private:
-        std::vector<Action*> queue;
-        pthread_mutex_t queue_lock;
+private:
+    std::vector<Action*> queue;
+    pthread_mutex_t queue_lock;
+    pthread_cond_t queue_cond;
 
-    public:
-        ActionQueue();
-        void add(Action *action);
-        void remove();
-        Action *peek();
-        int size();
+public:
+    ActionQueue();
+    void add(Action *action);
+    Action *remove();
+    unsigned long size();
+    void wait();
 };
 
 

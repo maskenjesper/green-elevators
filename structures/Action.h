@@ -6,25 +6,20 @@
 #define GREEN_ELEVATORS_ACTION_H
 
 
+#include "../utils/enums.h"
+
 class Action {
-public:
-    enum Direction {
-        UP, DOWN, NONE
-    };
-    enum Type {
-        PICKUP, DROPOFF
-    };
 private:
     int level, elevator;
-    Direction direction;
-    Type type;
+    CabinDirection direction;
+    ActionType type;
 
 public:
-    Action(int floor, int elevator, Direction direction, Type type);
+    Action(int floor, int elevator, CabinDirection direction, ActionType type);
     int getFloor();
     int getElevator();
-    Direction getDirection();
-    Type getType();
+    CabinDirection getDirection();
+    ActionType getType();
 };
 
 
