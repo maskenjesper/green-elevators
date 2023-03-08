@@ -1,21 +1,20 @@
 #include <iostream>
 
 #include "utils/hardwareAPI.h"
-#include "workers/CommandReceiver.h"
-#include "workers/CommandSender.h"
-#include "structures/ActionQueue.h"
+#include "workers/EventReceiver.h"
+#include "workers/ElevatorController.h"
+#include "workers/ActionDispatcher.h"
 
-int main() {
+int main(int argc, char *argv[]) {
+    int cabins = argc > 1 ? atoi(argv[1]) : 5;
+
     initHW((char*) "127.0.0.1", 4711);
 
-    auto *actionQueue = new ActionQueue();
+    ElevatorController::init(cabins);
+    ActionDispatcher::init();
+    EventReceiver::init();
 
-    // Starts the command receiver thread
-    pthread_t er = CommandReceiver::init(actionQueue);
-    // Starts the command sender thread
-    pthread_t cs = CommandSender::init(actionQueue);
-
-    pthread_join(er, NULL);
-    pthread_join(cs, NULL);
-    free(actionQueue);
+    EventReceiver::quit();
+    ActionDispatcher::quit();
+    ElevatorController::quit();
 }
