@@ -1,5 +1,6 @@
-#include <cmath>
+
 #include "ElevatorController.h"
+
 
 int ElevatorController::cabins;
 CabinState *ElevatorController::cabinStates;
@@ -31,12 +32,12 @@ void *ElevatorController::cabinController(void *args) {
     pthread_cond_init(&state->cond, nullptr);
     pthread_mutex_lock(&state->lock);
     while (true) {
-        if (!state->stops.empty()) {
-            if (state->position < state->stops.front() - 0.05) {
+        if (!state->stops.isEmpty()) {
+            if (state->position < state->stops.peek() - 0.05) {
                 state->direction = UP;
                 handleMotor(state->id, MotorAction::MotorUp);
             }
-            else if (state->position > state->stops.front() + 0.05) {
+            else if (state->position > state->stops.peek() + 0.05) {
                 state->direction = DOWN;
                 handleMotor(state->id, MotorAction::MotorDown);
             }
@@ -45,7 +46,6 @@ void *ElevatorController::cabinController(void *args) {
                 handleMotor(state->id, MotorAction::MotorStop);
                 state->stops.pop();
                 handleDoor(state->id, DoorAction::DoorOpen);
-                std::cout << speed;
                 pthread_mutex_unlock(&state->lock);
                 sleep(3);
                 pthread_mutex_lock(&state->lock);
@@ -57,10 +57,10 @@ void *ElevatorController::cabinController(void *args) {
     pthread_mutex_unlock(&state->lock);
 }
 
-void ElevatorController::addStop(int cabin, int level) {
+void ElevatorController::addStop(int cabin, Action action) {
     // TODO: add stop at right place according to wanted scheduling behaviour.
     pthread_mutex_lock(&cabinStates[cabin - 1].lock);
-    cabinStates[cabin - 1].stops.push(level);
+    cabinStates[cabin - 1].stops.push(action, cabinStates[cabin - 1].position, cabinStates[cabin - 1].direction);
     std::cout << "stop added to cabin " << cabin << std::endl;
     pthread_cond_broadcast(&cabinStates[cabin - 1].cond);
     pthread_mutex_unlock(&cabinStates[cabin - 1].lock);

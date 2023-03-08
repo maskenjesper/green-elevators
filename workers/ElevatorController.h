@@ -10,9 +10,12 @@
 #include <pthread.h>
 #include <iostream>
 #include <queue>
+#include <cmath>
 
 #include "../utils/hardwareAPI.h"
 #include "../utils/enums.h"
+#include "../structures/ServiceQueue.h"
+#include "../structures/Action.h"
 
 struct CabinState {
     int id;
@@ -20,7 +23,7 @@ struct CabinState {
     int scale;
     pthread_mutex_t lock;
     pthread_cond_t cond;
-    std::queue<int> stops;
+    ServiceQueue stops;
     Direction direction;
 };
 
@@ -37,7 +40,7 @@ private:
 public:
     static void init(int cabins);
     static void quit();
-    static void addStop(int cabin, int level);
+    static void addStop(int cabin, Action action);
     static void updatePosition(int cabin, double position);
     static void updateSpeed(double speedArg);
 };
