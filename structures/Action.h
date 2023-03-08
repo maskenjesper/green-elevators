@@ -8,18 +8,13 @@
 
 #include "../utils/enums.h"
 
-class Action {
-private:
+struct Action {
     int level, elevator;
     CabinDirection direction;
     ActionType type;
 
 public:
     Action(int floor, int elevator, CabinDirection direction, ActionType type);
-    int getFloor();
-    int getElevator();
-    CabinDirection getDirection();
-    ActionType getType();
 };
 
 

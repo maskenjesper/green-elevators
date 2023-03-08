@@ -1,93 +1,64 @@
 #include "ElevatorController.h"
 
-pthread_t *ElevatorController::controllerTid;
-pthread_t ElevatorController::schedulerTid;
-int ElevatorController::cabins;
-CabinState *ElevatorController::cabinStates;
-ActionQueue *ElevatorController::actionQueue;
-std::vector<int> *ElevatorController::cabinPaths;
-double ElevatorController::speed;
-
-void ElevatorController::init(ActionQueue *actionQueueArg, int cabinsArg) {
-    actionQueue = actionQueueArg;
+void ElevatorController::init(int cabinsArg) {
     cabins = cabinsArg;
-    cabinStates = new CabinState[cabins];
-    controllerTid = new pthread_t[cabins];
-    cabinPaths = new std::vector<int>[cabins];
     getSpeed();
+    cabinStates = reinterpret_cast<CabinState **>(new CabinState[cabins]);
+    tids = new pthread_t[cabins];
     for (int i = 0; i < cabins; i++) {
-        cabinStates[i].position = 0;
-        cabinStates[i].scale = 0;
-        cabinStates[i].direction = NONE;
-        whereIs(i + 1);
-    }
-    pthread_create(&schedulerTid, nullptr, scheduler, nullptr);
-    for (int i = 0; i < cabins; i++) {
-        int *id = new int(i);
-        pthread_create(&controllerTid[i], nullptr, cabinController, id);
+        cabinStates[i]->id = int(i+1);
+        pthread_create(&tids[i], nullptr, cabinController, cabinStates[i]);
     }
 }
 
 void ElevatorController::quit() {
-    pthread_join(schedulerTid, nullptr);
     for (int i = 0; i < cabins; i++)
-        pthread_join(controllerTid[i], nullptr);
-}
-
-void *ElevatorController::scheduler(void *) {
-    while (true) {
-        try {
-            Action *action = actionQueue->remove();
-            std::cout << "event sender: " << actionQueue->size();
-            for (int i = 0; i < 5; i++)
-                std::cout << " " << cabinStates[i].position;
-            std::cout << " " << action->getElevator() << std::endl;
-
-            switch (action->getType()) {
-                case PICKUP:
-                    cabinPaths[0].push_back(action->getFloor());
-                    break;
-                case DROPOFF:
-                    cabinPaths[action->getElevator() - 1].push_back(action->getFloor());
-                    break;
-            }
-        }
-        catch (std::out_of_range e) {
-            std::cout << "empty" << std::endl;
-        }
-        actionQueue->wait();
-    }
+        pthread_join(tids[i], nullptr);
 }
 
 void *ElevatorController::cabinController(void *args) {
-    int id = *(int *) args;
+    CabinState state = *(CabinState*) args;
+    state.position = 0;
+    state.scale = 0;
+    state.direction = NONE;
+    pthread_mutex_init(&state.lock, nullptr);
+    pthread_cond_init(&state.cond, nullptr);
+    pthread_mutex_lock(&state.lock);
     while (true) {
-        if (!cabinPaths[id].empty()) {
-            if (cabinStates[id].position < cabinPaths[id][0] - 0.05) {
-                cabinStates[id].direction = UP;
-                handleMotor(id + 1, MotorAction::MotorUp);
+        if (!state.stops.empty()) {
+            if (state.position < state.stops.top() - 0.05) {
+                state.direction = UP;
+                handleMotor(state.id, MotorAction::MotorUp);
             }
-            else if (cabinStates[id].position > cabinPaths[id][0] + 0.05) {
-                cabinStates[id].direction = DOWN;
-                handleMotor(id + 1, MotorAction::MotorDown);
+            else if (state.position > state.stops.top() + 0.05) {
+                state.direction = DOWN;
+                handleMotor(state.id, MotorAction::MotorDown);
             }
             else {
-                cabinStates[id].direction = NONE;
-                handleMotor(id + 1, MotorAction::MotorStop);
-                cabinPaths[id].pop_back();
-                handleDoor(id + 1, DoorAction::DoorOpen);
+                state.direction = NONE;
+                handleMotor(state.id, MotorAction::MotorStop);
+                state.stops.pop();
+                handleDoor(state.id, DoorAction::DoorOpen);
                 std::cout << speed;
+                pthread_mutex_unlock(&state.lock);
                 sleep(3);
-                handleDoor(id + 1, DoorAction::DoorClose);
+                pthread_mutex_lock(&state.lock);
+                handleDoor(state.id, DoorAction::DoorClose);
             }
         }
+        pthread_cond_wait(&state.cond, &state.lock);
     }
+    pthread_mutex_unlock(&state.lock);
+}
+
+void ElevatorController::addStop(int cabin, int level) {
+
 }
 
 void ElevatorController::updatePosition(int cabin, double position) {
-    cabinStates[cabin - 1].position = position;
-    if (cabinStates[cabin - 1].scale != (int) position) {
-        cabinStates[cabin - 1].scale = (int) position;
+    cabinStates[cabin - 1]->position = position;
+    if (cabinStates[cabin - 1]->scale != (int) position) {
+        cabinStates[cabin - 1]->scale = (int) position;
         handleScale(cabin, (int) position);
     }
 }
@@ -95,3 +66,4 @@ void ElevatorController::updatePosition(int cabin, double position) {
 void ElevatorController::updateSpeed(double speedArg) {
     speed = speedArg;
 }
+

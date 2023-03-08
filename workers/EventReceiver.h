@@ -5,20 +5,19 @@
 #include <iostream>
 
 #include "../utils/hardwareAPI.h"
-#include "../structures/ActionQueue.h"
+#include "ActionDispatcher.h"
 #include "ElevatorController.h"
 #include "../structures/Action.h"
 
 class EventReceiver {
 private:
     static pthread_t tid;
-    static ActionQueue *actionQueue;
 private:
     static void *worker(void *);
     EventReceiver();
 
 public:
-    static void init(ActionQueue *actionQueue);
+    static void init();
     static void quit();
 };
 

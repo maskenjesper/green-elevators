@@ -11,19 +11,3 @@ Action::Action(int floor, int elevator, CabinDirection direction, ActionType typ
     this->direction = direction;
     this->type = type;
 }
-
-int Action::getFloor() {
-    return this->level;
-}
-
-int Action::getElevator() {
-    return this->elevator;
-}
-
-CabinDirection Action::getDirection() {
-    return this->direction;
-}
-
-ActionType Action::getType() {
-    return this->type;
-}

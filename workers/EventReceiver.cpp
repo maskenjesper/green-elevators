@@ -2,10 +2,8 @@
 #include "EventReceiver.h"
 
 pthread_t EventReceiver::tid;
-ActionQueue *EventReceiver::actionQueue;
 
-void EventReceiver::init(ActionQueue *actionQueueArg) {
-    actionQueue = actionQueueArg;
+void EventReceiver::init() {
     pthread_create(&tid, NULL, worker, NULL);
 }
 
@@ -19,14 +17,14 @@ void *EventReceiver::worker(void *) {
         EventType eventType = waitForEvent(&eventDesc);
         switch (eventType) {
             case FloorButton:
-                actionQueue->add(new Action(eventDesc.fbp.floor,
+                ActionDispatcher::addAction(new Action(eventDesc.fbp.floor,
                                            0,
                                            eventDesc.fbp.type == GoingUp ?
                                                 UP : DOWN,
                                            PICKUP));
                 break;
             case CabinButton:
-                actionQueue->add(new Action(eventDesc.cbp.floor,
+                ActionDispatcher::addAction(new Action(eventDesc.cbp.floor,
                                            eventDesc.cbp.cabin,
                                            NONE,
                                            DROPOFF));

@@ -9,33 +9,35 @@
 
 #include <pthread.h>
 #include <iostream>
+#include <queue>
 
 #include "../utils/hardwareAPI.h"
-#include "../structures/ActionQueue.h"
+#include "../utils/enums.h"
 
 struct CabinState {
+    int id;
     double position;
     int scale;
+    pthread_mutex_t lock;
+    pthread_cond_t cond;
+    std::priority_queue<int> stops;
     CabinDirection direction;
 };
 
 class ElevatorController {
 private:
-    static pthread_t *controllerTid;
-    static pthread_t schedulerTid;
+    static pthread_t* tids;
     static int cabins;
-    static CabinState *cabinStates;
-    static ActionQueue *actionQueue;
-    static std::vector<int> *cabinPaths;
     static double speed;
+    static CabinState** cabinStates;
 private:
-    static void *scheduler(void *);
-    static void *cabinController(void *);
+    static void* cabinController(void*);
     ElevatorController();
 
 public:
-    static void init(ActionQueue *actionQueue, int cabins);
+    static void init(int cabins);
     static void quit();
+    static void addStop(int cabin, int level);
     static void updatePosition(int cabin, double position);
     static void updateSpeed(double speedArg);
 };
