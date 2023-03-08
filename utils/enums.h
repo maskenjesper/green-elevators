@@ -5,7 +5,7 @@
 #ifndef GREEN_ELEVATORS_ENUMS_H
 #define GREEN_ELEVATORS_ENUMS_H
 
-enum CabinDirection {
+enum Direction {
     UP, DOWN, NONE
 };
 enum ActionType {

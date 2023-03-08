@@ -3,7 +3,11 @@
 //
 
 #include "ActionDispatcher.h"
-#include "ElevatorController.h"
+
+pthread_t ActionDispatcher::tid;
+std::queue<Action> ActionDispatcher::actions;
+pthread_mutex_t ActionDispatcher::lock;
+pthread_cond_t ActionDispatcher::cond;
 
 void ActionDispatcher::init() {
     pthread_create(&tid, nullptr, worker, nullptr);
@@ -21,9 +25,12 @@ void *ActionDispatcher::worker(void *) {
             actions.pop();
             switch (action.type) {
                 case PICKUP:
-                    // TODO: determine closest cabin
+                    std::cout << "Dispatch new action: pickup, " << action.elevator << ", " << action.level << std::endl;
+                    // TODO: Determine best cabin to service request
+                    ElevatorController::addStop(1, action.level);
                     break;
                 case DROPOFF:
+                    std::cout << "Dispatch new action: dropoff, " << action.elevator << ", " << action.level << std::endl;
                     ElevatorController::addStop(action.elevator, action.level);
                     break;
             }

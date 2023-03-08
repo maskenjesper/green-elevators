@@ -17,6 +17,7 @@ void *EventReceiver::worker(void *) {
         EventType eventType = waitForEvent(&eventDesc);
         switch (eventType) {
             case FloorButton:
+                std::cout << "Floor button" << std::endl;
                 ActionDispatcher::addAction(new Action(eventDesc.fbp.floor,
                                            0,
                                            eventDesc.fbp.type == GoingUp ?
@@ -24,6 +25,7 @@ void *EventReceiver::worker(void *) {
                                            PICKUP));
                 break;
             case CabinButton:
+                std::cout << "Cabin button" << std::endl;
                 ActionDispatcher::addAction(new Action(eventDesc.cbp.floor,
                                            eventDesc.cbp.cabin,
                                            NONE,

@@ -5,7 +5,7 @@
 #include "Action.h"
 
 
-Action::Action(int floor, int elevator, CabinDirection direction, ActionType type) {
+Action::Action(int floor, int elevator, Direction direction, ActionType type) {
     this->level = floor;
     this->elevator = elevator;
     this->direction = direction;

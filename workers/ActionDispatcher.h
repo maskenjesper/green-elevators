@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <queue>
 #include "../structures/Action.h"
+#include "ElevatorController.h"
 
 class ActionDispatcher {
 private:

@@ -20,8 +20,8 @@ struct CabinState {
     int scale;
     pthread_mutex_t lock;
     pthread_cond_t cond;
-    std::priority_queue<int> stops;
-    CabinDirection direction;
+    std::queue<int> stops;
+    Direction direction;
 };
 
 class ElevatorController {
@@ -29,7 +29,7 @@ private:
     static pthread_t* tids;
     static int cabins;
     static double speed;
-    static CabinState** cabinStates;
+    static CabinState* cabinStates;
 private:
     static void* cabinController(void*);
     ElevatorController();

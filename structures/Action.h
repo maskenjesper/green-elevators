@@ -10,11 +10,11 @@
 
 struct Action {
     int level, elevator;
-    CabinDirection direction;
+    Direction direction;
     ActionType type;
 
 public:
-    Action(int floor, int elevator, CabinDirection direction, ActionType type);
+    Action(int floor, int elevator, Direction direction, ActionType type);
 };
 
 
