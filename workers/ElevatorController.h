@@ -32,6 +32,7 @@ private:
     static pthread_t* tids;
     static int cabins;
     static double speed;
+    static pthread_mutex_t cmd_lock;
     static CabinState* cabinStates;
 private:
     static void* cabinController(void*);

@@ -6,14 +6,17 @@ int ElevatorController::cabins;
 CabinState *ElevatorController::cabinStates;
 pthread_t *ElevatorController::tids;
 double ElevatorController::speed;
+pthread_mutex_t ElevatorController::cmd_lock;
 
 void ElevatorController::init(int cabinsArg) {
     cabins = cabinsArg;
     getSpeed();
     cabinStates = new CabinState[cabins];
+    pthread_mutex_init(&cmd_lock, nullptr);
     tids = new pthread_t[cabins];
     for (int i = 0; i < cabins; i++) {
         cabinStates[i].id = int(i+1);
+        cabinStates[i].stops = ServiceQueue();
         pthread_create(&tids[i], nullptr, cabinController, &cabinStates[i]);
     }
 }
@@ -35,21 +38,29 @@ void *ElevatorController::cabinController(void *args) {
         if (!state->stops.isEmpty()) {
             if (state->position < state->stops.peek() - 0.05) {
                 state->direction = UP;
+                pthread_mutex_lock(&cmd_lock);
                 handleMotor(state->id, MotorAction::MotorUp);
+                pthread_mutex_unlock(&cmd_lock);
             }
             else if (state->position > state->stops.peek() + 0.05) {
                 state->direction = DOWN;
+                pthread_mutex_lock(&cmd_lock);
                 handleMotor(state->id, MotorAction::MotorDown);
+                pthread_mutex_unlock(&cmd_lock);
             }
             else {
                 state->direction = NONE;
+                pthread_mutex_lock(&cmd_lock);
                 handleMotor(state->id, MotorAction::MotorStop);
-                state->stops.pop();
                 handleDoor(state->id, DoorAction::DoorOpen);
+                pthread_mutex_unlock(&cmd_lock);
                 pthread_mutex_unlock(&state->lock);
                 sleep(3);
                 pthread_mutex_lock(&state->lock);
+                pthread_mutex_lock(&cmd_lock);
                 handleDoor(state->id, DoorAction::DoorClose);
+                pthread_mutex_unlock(&cmd_lock);
+                state->stops.pop();
             }
         }
         pthread_cond_wait(&state->cond, &state->lock);

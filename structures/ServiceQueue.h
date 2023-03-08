@@ -7,12 +7,22 @@
 
 
 #include <list>
+#include <vector>
 #include "Action.h"
+
+struct Node {
+    int value;
+    Node* next;
+
+    Node(int value, Node* next) {
+        this->value = value;
+        this->next = next;
+    }
+};
 
 class ServiceQueue {
 private:
-    std::list<int> queue;
-    double scheduled_travel_length;
+    Node* head;
 
 public:
     ServiceQueue();
