@@ -25,13 +25,11 @@ void *ActionDispatcher::worker(void *) {
             actions.pop();
             switch (action.type) {
                 case PICKUP:
-                    std::cout << "Dispatch new action: pickup, " << action.elevator << ", " << action.level << std::endl;
                     // TODO: Determine best cabin to service request
-                    ElevatorController::addStop(1, action.level);
+                    ElevatorController::addStop(1, action);
                     break;
                 case DROPOFF:
-                    std::cout << "Dispatch new action: dropoff, " << action.elevator << ", " << action.level << std::endl;
-                    ElevatorController::addStop(action.elevator, action.level);
+                    ElevatorController::addStop(action.elevator, action);
                     break;
             }
         }

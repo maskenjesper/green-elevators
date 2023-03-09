@@ -1,15 +1,18 @@
-#include <cmath>
+
 #include "ElevatorController.h"
+
 
 int ElevatorController::cabins;
 CabinState *ElevatorController::cabinStates;
 pthread_t *ElevatorController::tids;
 double ElevatorController::speed;
+pthread_mutex_t ElevatorController::cmd_lock;
 
 void ElevatorController::init(int cabinsArg) {
     cabins = cabinsArg;
     getSpeed();
     cabinStates = new CabinState[cabins];
+    pthread_mutex_init(&cmd_lock, nullptr);
     tids = new pthread_t[cabins];
     for (int i = 0; i < cabins; i++) {
         cabinStates[i].id = int(i+1);
@@ -31,25 +34,37 @@ void *ElevatorController::cabinController(void *args) {
     pthread_cond_init(&state->cond, nullptr);
     pthread_mutex_lock(&state->lock);
     while (true) {
-        if (!state->stops.empty()) {
-            if (state->position < state->stops.front() - 0.05) {
-                state->direction = UP;
-                handleMotor(state->id, MotorAction::MotorUp);
+        if (!state->stops.isEmpty()) {
+            try {
+                if (state->position < state->stops.peek() - 0.05) {
+                    state->direction = UP;
+                    pthread_mutex_lock(&cmd_lock);
+                    handleMotor(state->id, MotorAction::MotorUp);
+                    pthread_mutex_unlock(&cmd_lock);
+                }
+                else if (state->position > state->stops.peek() + 0.05) {
+                    state->direction = DOWN;
+                    pthread_mutex_lock(&cmd_lock);
+                    handleMotor(state->id, MotorAction::MotorDown);
+                    pthread_mutex_unlock(&cmd_lock);
+                }
+                else {
+                    state->direction = NONE;
+                    pthread_mutex_lock(&cmd_lock);
+                    handleMotor(state->id, MotorAction::MotorStop);
+                    handleDoor(state->id, DoorAction::DoorOpen);
+                    pthread_mutex_unlock(&cmd_lock);
+                    pthread_mutex_unlock(&state->lock);
+                    sleep(3);
+                    pthread_mutex_lock(&state->lock);
+                    pthread_mutex_lock(&cmd_lock);
+                    handleDoor(state->id, DoorAction::DoorClose);
+                    pthread_mutex_unlock(&cmd_lock);
+                    state->stops.pop();
+                }
             }
-            else if (state->position > state->stops.front() + 0.05) {
-                state->direction = DOWN;
-                handleMotor(state->id, MotorAction::MotorDown);
-            }
-            else {
-                state->direction = NONE;
-                handleMotor(state->id, MotorAction::MotorStop);
-                state->stops.pop();
-                handleDoor(state->id, DoorAction::DoorOpen);
-                std::cout << speed;
-                pthread_mutex_unlock(&state->lock);
-                sleep(3);
-                pthread_mutex_lock(&state->lock);
-                handleDoor(state->id, DoorAction::DoorClose);
+            catch (const char* e) {
+                continue;
             }
         }
         pthread_cond_wait(&state->cond, &state->lock);
@@ -57,11 +72,10 @@ void *ElevatorController::cabinController(void *args) {
     pthread_mutex_unlock(&state->lock);
 }
 
-void ElevatorController::addStop(int cabin, int level) {
+void ElevatorController::addStop(int cabin, Action action) {
     // TODO: add stop at right place according to wanted scheduling behaviour.
     pthread_mutex_lock(&cabinStates[cabin - 1].lock);
-    cabinStates[cabin - 1].stops.push(level);
-    std::cout << "stop added to cabin " << cabin << std::endl;
+    cabinStates[cabin - 1].stops.push(action, cabinStates[cabin - 1].position, cabinStates[cabin - 1].direction);
     pthread_cond_broadcast(&cabinStates[cabin - 1].cond);
     pthread_mutex_unlock(&cabinStates[cabin - 1].lock);
 }
@@ -71,7 +85,9 @@ void ElevatorController::updatePosition(int cabin, double position) {
     cabinStates[cabin - 1].position = position;
     if (cabinStates[cabin - 1].scale != (int) round(position)) {
         cabinStates[cabin - 1].scale = (int) round(position);
+        pthread_mutex_lock(&cmd_lock);
         handleScale(cabin, (int) round(position));
+        pthread_mutex_unlock(&cmd_lock);
     }
     pthread_cond_broadcast(&cabinStates[cabin - 1].cond);
     pthread_mutex_unlock(&cabinStates[cabin - 1].lock);
@@ -79,5 +95,15 @@ void ElevatorController::updatePosition(int cabin, double position) {
 
 void ElevatorController::updateSpeed(double speedArg) {
     speed = speedArg;
+}
+
+void ElevatorController::emergencyStop(int cabin) {
+    pthread_mutex_lock(&cabinStates[cabin - 1].lock);
+    cabinStates[cabin - 1].stops.clear();
+    pthread_mutex_lock(&cmd_lock);
+    handleMotor(cabin, MotorAction::MotorStop);
+    pthread_mutex_unlock(&cmd_lock);
+    pthread_mutex_unlock(&cabinStates[cabin - 1].lock);
+
 }
 
