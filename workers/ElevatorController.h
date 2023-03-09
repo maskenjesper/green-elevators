@@ -44,6 +44,7 @@ public:
     static void addStop(int cabin, Action action);
     static void updatePosition(int cabin, double position);
     static void updateSpeed(double speedArg);
+    static void emergencyStop(int cabin);
 };
 
 #endif //GREEN_ELEVATORS_ELEVATORCONTROLLER_H

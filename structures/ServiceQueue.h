@@ -13,16 +13,23 @@
 struct Node {
     int value;
     Node* next;
+    Node* prev;
 
-    Node(int value, Node* next) {
+    Node(int value, Node* next, Node* prev) {
         this->value = value;
         this->next = next;
+        this->prev = prev;
     }
 };
 
 class ServiceQueue {
 private:
-    Node* head;
+    Node* head; // Points at the first floor in queue
+    Node* turn; // Points at the first floor on return in queue
+    Node* tail; // Points at the last floor in queue
+private:
+    void print();
+    void pushOrdered(Node* from, Direction direction, int level);
 
 public:
     ServiceQueue();
@@ -30,6 +37,7 @@ public:
     int peek();
     void pop();
     bool isEmpty();
+    void clear();
 };
 
 
