@@ -11,6 +11,7 @@
 #include <iostream>
 #include <queue>
 #include <cmath>
+#include <limits>
 
 #include "../utils/hardwareAPI.h"
 #include "../utils/enums.h"
@@ -45,6 +46,7 @@ public:
     static void updatePosition(int cabin, double position);
     static void updateSpeed(double speedArg);
     static void emergencyStop(int cabin);
+    static int lowestCost(Action action);
 };
 
 #endif //GREEN_ELEVATORS_ELEVATORCONTROLLER_H

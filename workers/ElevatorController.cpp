@@ -107,3 +107,18 @@ void ElevatorController::emergencyStop(int cabin) {
 
 }
 
+int ElevatorController::lowestCost(Action action) {
+    double min = std::numeric_limits<int>::max();
+    int min_cabin;
+    for (int i = 0; i < cabins; i++) {
+        pthread_mutex_lock(&cabinStates[i].lock);
+        double cost = cabinStates[i].stops.cost(action, cabinStates[i].position, cabinStates[i].direction);
+        pthread_mutex_unlock(&cabinStates[i].lock);
+        if (cost < min) {
+            min = cost;
+            min_cabin = i + 1;
+        }
+    }
+    return min_cabin;
+}
+

@@ -8,6 +8,9 @@
 
 #include <list>
 #include <vector>
+#include <algorithm>
+#include <iostream>
+#include <cmath>
 #include "Action.h"
 
 struct Node {
@@ -30,9 +33,12 @@ private:
 private:
     void print();
     void pushOrdered(Node* from, Direction direction, int level);
+    bool contains(int value);
+    void remove(int value);
 
 public:
     ServiceQueue();
+    double cost(Action action, double current_pos, Direction current_dir);
     void push(Action action, double current_pos, Direction current_dir);
     int peek();
     void pop();
