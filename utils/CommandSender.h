@@ -11,6 +11,7 @@
 class CommandSender {
 private:
     static pthread_mutex_t cmd_lock;
+    CommandSender();
 
 public:
     static void init();

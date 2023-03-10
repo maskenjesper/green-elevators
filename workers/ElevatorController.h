@@ -13,27 +13,13 @@
 #include <cmath>
 #include <limits>
 
-#include "../utils/enums.h"
-#include "../collections/ServiceQueue.h"
 #include "../structures/Request.h"
-#include "../utils/CommandSender.h"
-
-struct CabinState {
-    int id;
-    double position;
-    int scale;
-    pthread_mutex_t lock;
-    pthread_cond_t cond;
-    ServiceQueue stops;
-    Direction direction;
-};
+#include "CabinController.h"
 
 class ElevatorController {
 private:
-    static pthread_t* tids;
     static int cabins;
-    static double speed;
-    static CabinState* cabinStates;
+    static CabinController* cabin_controllers[];
 private:
     static void* cabinController(void*);
     ElevatorController();
@@ -43,7 +29,7 @@ public:
     static void quit();
     static void addStop(int cabin, Request request);
     static void updatePosition(int cabin, double position);
-    static void updateSpeed(double speedArg);
+    static void updateSpeed(double speed);
     static void emergencyStop(int cabin);
     static int lowestCost(Request request);
 };
