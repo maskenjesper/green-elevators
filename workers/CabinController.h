@@ -19,7 +19,7 @@ private:
     double position;
     int scale;
     double speed;
-    ServiceQueue stops;
+    ServiceQueue* stops;
     Direction direction;
 private:
     static void* worker(void* args);

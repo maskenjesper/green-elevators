@@ -7,10 +7,9 @@ CabinController* ElevatorController::cabin_controllers[10];
 
 void ElevatorController::init(int cabinsArg) {
     cabins = cabinsArg;
-    getSpeed();
-    std::cout << "test";
     for (int i = 0; i < cabins; i++)
         cabin_controllers[i] = new CabinController(i);
+    getSpeed();
 }
 
 void ElevatorController::quit() {
