@@ -3,7 +3,7 @@
 //
 
 #ifndef GREEN_ELEVATORS_SERVICEQUEUE_H
-#define GREEN_ELEVATORS_SERVICEQUEUE_H
+#define GREEN_ELEVATORS_SERVICEQUEUE_BAK_H
 
 
 #include <list>
@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cmath>
-#include "Action.h"
+#include "../structures/Request.h"
 
 struct Node {
     int value;
@@ -38,8 +38,8 @@ private:
 
 public:
     ServiceQueue();
-    double cost(Action action, double current_pos, Direction current_dir);
-    void push(Action action, double current_pos, Direction current_dir);
+    double cost(Request request, double current_pos, Direction current_dir);
+    void push(Request request, double current_pos, Direction current_dir);
     int peek();
     void pop();
     bool isEmpty();

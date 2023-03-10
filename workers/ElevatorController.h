@@ -13,10 +13,10 @@
 #include <cmath>
 #include <limits>
 
-#include "../utils/hardwareAPI.h"
 #include "../utils/enums.h"
-#include "../structures/ServiceQueue.h"
-#include "../structures/Action.h"
+#include "../collections/ServiceQueue.h"
+#include "../structures/Request.h"
+#include "../utils/CommandSender.h"
 
 struct CabinState {
     int id;
@@ -33,7 +33,6 @@ private:
     static pthread_t* tids;
     static int cabins;
     static double speed;
-    static pthread_mutex_t cmd_lock;
     static CabinState* cabinStates;
 private:
     static void* cabinController(void*);
@@ -42,11 +41,11 @@ private:
 public:
     static void init(int cabins);
     static void quit();
-    static void addStop(int cabin, Action action);
+    static void addStop(int cabin, Request request);
     static void updatePosition(int cabin, double position);
     static void updateSpeed(double speedArg);
     static void emergencyStop(int cabin);
-    static int lowestCost(Action action);
+    static int lowestCost(Request request);
 };
 
 #endif //GREEN_ELEVATORS_ELEVATORCONTROLLER_H

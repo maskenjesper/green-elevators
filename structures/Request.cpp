@@ -2,10 +2,10 @@
 // Created by jakobolsson on 3/3/23.
 //
 
-#include "Action.h"
+#include "Request.h"
 
 
-Action::Action(int floor, int elevator, Direction direction, ActionType type) {
+Request::Request(int floor, int elevator, Direction direction, ActionType type) {
     this->level = floor;
     this->elevator = elevator;
     this->direction = direction;
