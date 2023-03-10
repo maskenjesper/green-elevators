@@ -137,21 +137,21 @@ void ServiceQueue::clear() {
 double ServiceQueue::cost(Action action, double current_pos, Direction current_dir) {
     double cost = 0;
     if (isEmpty())
-        return 0;
+        return fabs(current_pos - action.level);
     else if (contains(action.level)) {
-        cost += fabs(current_pos - head->value);
+        cost += fabs(current_pos - head->value) + 0.1;
         Node* current = head;
         while (current->value != action.level) {
-            cost += fabs(current->value - current->next->value);
+            cost += fabs(current->value - current->next->value) + 0.1;
             current = current->next;
         }
     }
     else {
         push(action, current_pos, current_dir);
-        cost += fabs(current_pos - head->value);
+        cost += fabs(current_pos - head->value) + 0.1;
         Node* current = head;
         while (current->value != action.level) {
-            cost += fabs(current->value - current->next->value);
+            cost += fabs(current->value - current->next->value) + 0.1;
             current = current->next;
         }
         remove(action.level);

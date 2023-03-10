@@ -73,7 +73,6 @@ void *ElevatorController::cabinController(void *args) {
 }
 
 void ElevatorController::addStop(int cabin, Action action) {
-    // TODO: add stop at right place according to wanted scheduling behaviour.
     pthread_mutex_lock(&cabinStates[cabin - 1].lock);
     cabinStates[cabin - 1].stops.push(action, cabinStates[cabin - 1].position, cabinStates[cabin - 1].direction);
     pthread_cond_broadcast(&cabinStates[cabin - 1].cond);
