@@ -27,7 +27,10 @@ void* CabinController::worker(void* args) {
     pthread_mutex_lock(&self->lock);
     while (true) {
         if (!self->stops->isEmpty()) {
-            if (self->position < self->stops->peek(self->position, self->direction) - 0.05) {
+            if (self->stops->peek(self->position, self->direction) == -1) {
+                self->direction = self->direction == UP ? DOWN : UP;
+            }
+            else if (self->position < self->stops->peek(self->position, self->direction) - 0.05) {
                 self->direction = UP;
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorUp);
             }
@@ -36,9 +39,10 @@ void* CabinController::worker(void* args) {
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorDown);
             }
             else {
-                self->direction = NONE;
-                if (!self->stops->isEmpty())
+                if (!self->stops->isEmpty()) {
+                    std::cout << self->id << " pop:\t";
                     self->stops->pop(self->position, self->direction);
+                }
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
                 pthread_mutex_unlock(&self->lock);
@@ -47,6 +51,8 @@ void* CabinController::worker(void* args) {
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
             }
         }
+        else
+            self->direction = NONE;
         pthread_cond_wait(&self->cond, &self->lock);
     }
     pthread_mutex_unlock(&self->lock);
@@ -54,6 +60,7 @@ void* CabinController::worker(void* args) {
 
 void CabinController::addStop(Request request) {
     pthread_mutex_lock(&lock);
+    std::cout << this->id << " push:\t";
     stops->push(request);
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&lock);
@@ -76,10 +83,7 @@ void CabinController::updateSpeed(double speed) {
 }
 
 void CabinController::emergencyStop() {
-    pthread_mutex_lock(&lock);
-    stops->clear();
     CommandSender::syncHandleMotor(id, MotorAction::MotorStop);
-    pthread_mutex_unlock(&lock);
 }
 
 double CabinController::cost(Request request) {

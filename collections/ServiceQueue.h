@@ -32,8 +32,6 @@ private:
     int floors;
 private:
     void print();
-    bool contains(int value);
-    void remove(int value);
 
 public:
     ServiceQueue(int floors);
@@ -42,7 +40,6 @@ public:
     int peek(double current_pos, Direction current_dir);
     void pop(double current_pos, Direction current_dir);
     bool isEmpty();
-    void clear();
 };
 
 
