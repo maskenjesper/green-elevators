@@ -2,8 +2,7 @@
 // Created by jakobolsson on 3/8/23.
 //
 
-#include <algorithm>
-#include <iostream>
+
 #include "ServiceQueue.h"
 
 ServiceQueue::ServiceQueue() {
@@ -14,12 +13,7 @@ ServiceQueue::ServiceQueue() {
 
 void ServiceQueue::push(Action action, double current_pos, Direction current_dir) {
     // If stop is already in queue, don't add it.
-    Node* current = head;
-    while (current != nullptr) {
-        if (current->value == action.level)
-            return;
-        current = current->next;
-    }
+    contains(action.level);
     // If the queue is empty, just push it.
     if (isEmpty()) {
         std::cout << "added to empty" << std::endl;
@@ -137,6 +131,67 @@ void ServiceQueue::clear() {
         catch (const char* e) {
             break;
         }
+    }
+}
+
+double ServiceQueue::cost(Action action, double current_pos, Direction current_dir) {
+    double cost = 0;
+    if (isEmpty())
+        return fabs(current_pos - action.level);
+    else if (contains(action.level)) {
+        cost += fabs(current_pos - head->value) + 0.1;
+        Node* current = head;
+        while (current->value != action.level) {
+            cost += fabs(current->value - current->next->value) + 0.1;
+            current = current->next;
+        }
+    }
+    else {
+        push(action, current_pos, current_dir);
+        cost += fabs(current_pos - head->value) + 0.1;
+        Node* current = head;
+        while (current->value != action.level) {
+            cost += fabs(current->value - current->next->value) + 0.1;
+            current = current->next;
+        }
+        remove(action.level);
+    }
+    return cost;
+}
+
+bool ServiceQueue::contains(int value) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->value == value)
+            return true;
+        current = current->next;
+    }
+    return false;
+}
+
+void ServiceQueue::remove(int value) {
+    if (isEmpty())
+        return;
+    Node* current = head;
+    while (current->next != nullptr) {
+        if (current->value == value)
+            break;
+        current = current->next;
+    }
+    if (current->prev == nullptr) {
+        pop();
+    }
+    else if (current->next == nullptr) {
+        if (turn == tail)
+            turn = nullptr;
+        tail = tail->prev;
+        tail->next = nullptr;
+        delete current;
+    }
+    else {
+        current->next->prev = current->prev;
+        current->prev->next = current->next;
+        delete current;
     }
 }
 

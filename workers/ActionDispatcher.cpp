@@ -25,8 +25,7 @@ void *ActionDispatcher::worker(void *) {
             actions.pop();
             switch (action.type) {
                 case PICKUP:
-                    // TODO: Determine best cabin to service request
-                    ElevatorController::addStop(1, action);
+                    ElevatorController::addStop(ElevatorController::lowestCost(action), action);
                     break;
                 case DROPOFF:
                     ElevatorController::addStop(action.elevator, action);
