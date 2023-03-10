@@ -6,7 +6,7 @@
 
 #include "../utils/hardwareAPI.h"
 #include "ElevatorController.h"
-#include "../structures/Action.h"
+#include "../structures/Request.h"
 
 class EventReceiver {
 private:

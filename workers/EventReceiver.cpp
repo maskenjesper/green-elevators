@@ -15,25 +15,27 @@ void *EventReceiver::worker(void *) {
     while (true) {
         EventDesc eventDesc;
         EventType eventType = waitForEvent(&eventDesc);
-        Action* action;
+        Request* request;
         switch (eventType) {
             case FloorButton:
-                action = new Action(eventDesc.fbp.floor,
-                                   0,
+                request = new Request(eventDesc.fbp.floor,
+                                      0,
                                    eventDesc.fbp.type == GoingUp ? UP : DOWN,
-                                   PICKUP);
-                ElevatorController::addStop(ElevatorController::lowestCost(*action), *action);
+                                      PICKUP);
+                ElevatorController::addStop(ElevatorController::lowestCost(*request), *request);
+                delete request;
                 break;
             case CabinButton:
                 if (eventDesc.cbp.floor == 32000) {
                     ElevatorController::emergencyStop(eventDesc.cbp.cabin);
                     break;
                 }
-                action = new Action(eventDesc.cbp.floor,
-                                   eventDesc.cbp.cabin,
-                                   NONE,
-                                   DROPOFF);
-                ElevatorController::addStop(action->elevator, *action);
+                request = new Request(eventDesc.cbp.floor,
+                                      eventDesc.cbp.cabin,
+                                      NONE,
+                                      DROPOFF);
+                ElevatorController::addStop(request->cabin, *request);
+                delete request;
                 break;
             case Position:
                 ElevatorController::updatePosition(eventDesc.cp.cabin, eventDesc.cp.position);
