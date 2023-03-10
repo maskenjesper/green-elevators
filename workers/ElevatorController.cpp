@@ -7,13 +7,15 @@ CabinController* ElevatorController::cabin_controllers[10];
 
 void ElevatorController::init(int cabinsArg) {
     cabins = cabinsArg;
-    for (int i = 0; i < cabins; i++)
+    for (int i = 1; i <= cabins; i++) {
         cabin_controllers[i] = new CabinController(i);
-    getSpeed();
+        CommandSender::syncWhereIs(i);
+    }
+    CommandSender::syncGetSpeed();
 }
 
 void ElevatorController::quit() {
-    for (int i = 0; i < cabins; i++)
+    for (int i = 1; i <= cabins; i++)
         delete cabin_controllers[i];
 }
 
@@ -26,7 +28,7 @@ void ElevatorController::updatePosition(int cabin, double position) {
 }
 
 void ElevatorController::updateSpeed(double speed) {
-    for (int i = 0; i < cabins; i++)
+    for (int i = 1; i <= cabins; i++)
         cabin_controllers[i]->updateSpeed(speed);
 }
 
@@ -37,11 +39,11 @@ void ElevatorController::emergencyStop(int cabin) {
 int ElevatorController::lowestCost(Request request) {
     double min = std::numeric_limits<int>::max();
     int min_cabin;
-    for (int i = 0; i < cabins; i++) {
+    for (int i = 1; i <= cabins; i++) {
         double cost = cabin_controllers[i]->cost(request);
         if (cost < min) {
             min = cost;
-            min_cabin = i + 1;
+            min_cabin = i;
         }
     }
     return min_cabin;

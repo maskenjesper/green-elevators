@@ -23,32 +23,28 @@ CabinController::~CabinController() {
 }
 
 void* CabinController::worker(void* args) {
-    auto* self = (CabinController*) args;
+    auto self = (CabinController*) args;
     pthread_mutex_lock(&self->lock);
     while (true) {
         if (!self->stops->isEmpty()) {
-            try {
-                if (self->position < self->stops->peek() - 0.05) {
-                    self->direction = UP;
-                    CommandSender::syncHandleMotor(self->id, MotorAction::MotorUp);
-                }
-                else if (self->position > self->stops->peek() + 0.05) {
-                    self->direction = DOWN;
-                    CommandSender::syncHandleMotor(self->id, MotorAction::MotorDown);
-                }
-                else {
-                    self->direction = NONE;
-                    CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
-                    CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
-                    pthread_mutex_unlock(&self->lock);
-                    sleep(3);
-                    pthread_mutex_lock(&self->lock);
-                    CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
-                    self->stops->pop();
-                }
+            if (self->position < self->stops->peek() - 0.05) {
+                self->direction = UP;
+                CommandSender::syncHandleMotor(self->id, MotorAction::MotorUp);
             }
-            catch (const char* e) {
-                continue;
+            else if (self->position > self->stops->peek() + 0.05) {
+                self->direction = DOWN;
+                CommandSender::syncHandleMotor(self->id, MotorAction::MotorDown);
+            }
+            else {
+                self->direction = NONE;
+                if (!self->stops->isEmpty())
+                    self->stops->pop();
+                CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
+                CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
+                pthread_mutex_unlock(&self->lock);
+                sleep(3);
+                pthread_mutex_lock(&self->lock);
+                CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
             }
         }
         pthread_cond_wait(&self->cond, &self->lock);
@@ -64,6 +60,7 @@ void CabinController::addStop(Request request) {
 }
 
 void CabinController::updatePosition(double position) {
+
     pthread_mutex_lock(&lock);
     this->position = position;
     if (scale != (int) round(position)) {
