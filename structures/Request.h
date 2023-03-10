@@ -9,12 +9,13 @@
 #include "../utils/enums.h"
 
 struct Request {
-    int level, elevator;
+    int floor, cabin;
     Direction direction;
     ActionType type;
 
 public:
-    Request(int floor, int elevator, Direction direction, ActionType type);
+    Request();
+    Request(int floor, int cabin, Direction direction, ActionType type);
 };
 
 

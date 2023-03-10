@@ -25,7 +25,7 @@ private:
     static void* worker(void* args);
 
 public:
-    CabinController(int id);
+    CabinController(int id, int floors);
     ~CabinController();
     void addStop(Request request);
     void updatePosition(double position);

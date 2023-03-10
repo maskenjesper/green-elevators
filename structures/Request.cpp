@@ -5,9 +5,13 @@
 #include "Request.h"
 
 
-Request::Request(int floor, int elevator, Direction direction, ActionType type) {
-    this->level = floor;
-    this->elevator = elevator;
+Request::Request(int floor, int cabin, Direction direction, ActionType type) {
+    this->floor = floor;
+    this->cabin = cabin;
     this->direction = direction;
     this->type = type;
+}
+
+Request::Request() {
+
 }

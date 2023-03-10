@@ -5,10 +5,10 @@
 int ElevatorController::cabins;
 CabinController* ElevatorController::cabin_controllers[10];
 
-void ElevatorController::init(int cabinsArg) {
+void ElevatorController::init(int cabinsArg, int floors) {
     cabins = cabinsArg;
     for (int i = 1; i <= cabins; i++) {
-        cabin_controllers[i] = new CabinController(i);
+        cabin_controllers[i] = new CabinController(i, floors);
         CommandSender::syncWhereIs(i);
     }
     CommandSender::syncGetSpeed();

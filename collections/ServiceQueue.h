@@ -27,21 +27,20 @@ struct Node {
 
 class ServiceQueue {
 private:
-    Node* head; // Points at the first floor in queue
-    Node* turn; // Points at the first floor on return in queue
-    Node* tail; // Points at the last floor in queue
+    Request* requests;
+    bool* pending;
+    int floors;
 private:
     void print();
-    void pushOrdered(Node* from, Direction direction, int level);
     bool contains(int value);
     void remove(int value);
 
 public:
-    ServiceQueue();
+    ServiceQueue(int floors);
     double cost(Request request, double current_pos, Direction current_dir);
-    void push(Request request, double current_pos, Direction current_dir);
-    int peek();
-    void pop();
+    void push(Request request);
+    int peek(double current_pos, Direction current_dir);
+    void pop(double current_pos, Direction current_dir);
     bool isEmpty();
     void clear();
 };

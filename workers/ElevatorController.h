@@ -21,11 +21,10 @@ private:
     static int cabins;
     static CabinController* cabin_controllers[];
 private:
-    static void* cabinController(void*);
     ElevatorController();
 
 public:
-    static void init(int cabins);
+    static void init(int cabins, int floors);
     static void quit();
     static void addStop(int cabin, Request request);
     static void updatePosition(int cabin, double position);

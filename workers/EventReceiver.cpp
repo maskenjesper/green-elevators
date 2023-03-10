@@ -23,6 +23,7 @@ void *EventReceiver::worker(void *) {
                                    eventDesc.fbp.type == GoingUp ? UP : DOWN,
                                       PICKUP);
                 ElevatorController::addStop(ElevatorController::lowestCost(*request), *request);
+                delete request;
                 break;
             case CabinButton:
                 if (eventDesc.cbp.floor == 32000) {
@@ -33,7 +34,8 @@ void *EventReceiver::worker(void *) {
                                       eventDesc.cbp.cabin,
                                       NONE,
                                       DROPOFF);
-                ElevatorController::addStop(request->elevator, *request);
+                ElevatorController::addStop(request->cabin, *request);
+                delete request;
                 break;
             case Position:
                 ElevatorController::updatePosition(eventDesc.cp.cabin, eventDesc.cp.position);

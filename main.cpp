@@ -7,11 +7,12 @@
 
 int main(int argc, char *argv[]) {
     int cabins = argc > 1 ? atoi(argv[1]) : 5;
+    int floors = argc > 2 ? atoi(argv[2]) : 6;
 
     initHW((char*) "127.0.0.1", 4711);
     CommandSender::init();
 
-    ElevatorController::init(cabins);
+    ElevatorController::init(cabins, floors);
     EventReceiver::init();
 
     EventReceiver::quit();

@@ -6,14 +6,14 @@
 #include "CabinController.h"
 
 
-CabinController::CabinController(int id) {
+CabinController::CabinController(int id, int floors) {
     this->id = id;
     pthread_mutex_init(&lock, nullptr);
     pthread_cond_init(&cond, nullptr);
     position = 0;
     scale = 0;
     direction = NONE;
-    stops = new ServiceQueue();
+    stops = new ServiceQueue(floors);
     pthread_create(&tid, nullptr, worker, this);
 }
 
@@ -27,18 +27,18 @@ void* CabinController::worker(void* args) {
     pthread_mutex_lock(&self->lock);
     while (true) {
         if (!self->stops->isEmpty()) {
-            if (self->position < self->stops->peek() - 0.05) {
+            if (self->position < self->stops->peek(self->position, self->direction) - 0.05) {
                 self->direction = UP;
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorUp);
             }
-            else if (self->position > self->stops->peek() + 0.05) {
+            else if (self->position > self->stops->peek(self->position, self->direction) + 0.05) {
                 self->direction = DOWN;
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorDown);
             }
             else {
                 self->direction = NONE;
                 if (!self->stops->isEmpty())
-                    self->stops->pop();
+                    self->stops->pop(self->position, self->direction);
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
                 pthread_mutex_unlock(&self->lock);
@@ -54,7 +54,7 @@ void* CabinController::worker(void* args) {
 
 void CabinController::addStop(Request request) {
     pthread_mutex_lock(&lock);
-    stops->push(request, position, direction);
+    stops->push(request);
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&lock);
 }
