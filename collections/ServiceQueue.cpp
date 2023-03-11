@@ -7,53 +7,61 @@
 
 ServiceQueue::ServiceQueue(int floors) {
     this->floors =  floors;
-    requests = new Request[floors];
+    type = new Direction[floors];
     pending = new bool[floors];
     for (int i = 0; i < floors; i++)
         pending[i] = false;
+    preferred_dir = NONE;
 }
 
 void ServiceQueue::push(Request request) {
     if (!pending[request.floor]) {
-        requests[request.floor] = request;
+        type[request.floor] = request.direction;
         pending[request.floor] = true;
     }
-    else if (requests[request.floor].type != DROPOFF && request.type == DROPOFF) {
+    else if (type[request.floor] != NONE && request.type == DROPOFF) {
         std::cout << "overwrite" << std::endl;
-        requests[request.floor] = request;
+        type[request.floor] = NONE;
     }
     print();
 }
 
-int ServiceQueue::peek(double current_pos, Direction current_dir) {
+int ServiceQueue::peek() {
     if (isEmpty())
         throw "No elements";
-    switch (current_dir) {
+    switch (preferred_dir) {
         case UP:
-            for (int i = ceil(current_pos); i < floors; i++)
-                if (pending[i] && (requests[i].direction == NONE || requests[i].direction == UP))
-                    return requests[i].floor;
-            if (pending[floors - 1])
-                return requests[floors - 1].floor;
+            for (int i = ceil(position); i < floors; i++)
+                if (pending[i] && (type[i] == NONE || type[i] == UP))
+                    return i;
+            for (int i = floors - 1; i >= ceil(position); i--)
+                if (pending[i] && (type[i] == NONE || type[i] == DOWN))
+                    return i;
+            preferred_dir = DOWN;
             return -1;
-
         case DOWN:
-            for (int i = floor(current_pos); i >= 0; i--)
-                if (pending[i] && (requests[i].direction == NONE || requests[i].direction == DOWN))
-                    return requests[i].floor;
-            if (pending[0])
-                return requests[0].floor;
-            return -1;
+            for (int i = floor(position); i >= 0; i--)
+                if (pending[i] && (type[i] == NONE || type[i] == DOWN))
+                    return i;
+            for (int i = 0; i <= floor(position); i++)
+                if (pending[i] && (type[i] == NONE || type[i] == UP))
+                    return i;
+            preferred_dir = UP;
+            return floors;
         case NONE:
             for (int i = 0; i < floors; i++)
-                if (pending[i])
-                    return requests[i].floor;
+                if (pending[i]) {
+                    preferred_dir = i < position ? DOWN : UP;
+                    return i;
+                }
             break;
     }
 }
 
-void ServiceQueue::pop(double current_pos, Direction current_dir) {
-    pending[peek(current_pos, current_dir)] = false;
+void ServiceQueue::pop() {
+    pending[peek()] = false;
+    if (isEmpty())
+        preferred_dir = NONE;
     print();
 }
 
@@ -71,11 +79,42 @@ void ServiceQueue::print() {
     std::cout << pending[floors - 1] << "]" << std::endl;
 }
 
-double ServiceQueue::cost(Request request, double current_pos, Direction current_dir) {
-    double cost = 0;
-    for (int i = 0; i < floors; i++)
-        if (pending[i])
-            cost++;
+void ServiceQueue::updatePosition(double new_position) {
+    this->position = new_position;
+}
+
+double ServiceQueue::cost(Request request) {
+    // Saving state
+    Backup* backup = new Backup(type, pending, floors, preferred_dir, position);
+    // Calculate cost
+    push(request);
+    int next_floor = peek();
+    if (next_floor >= floors || next_floor < 0)
+        next_floor = peek();
+    pop();
+    double cost = fabs(position - next_floor);
+    position = next_floor;
+    while (next_floor != request.floor) {
+        next_floor = peek();
+        if (next_floor >= floors || next_floor < 0)
+            next_floor = peek();
+        pop();
+        cost += fabs(position - next_floor);
+        position = next_floor;
+    }
+    // Restore state
+    restore(backup);
     return cost;
+}
+
+void ServiceQueue::restore(Backup* backup) {
+    for (int i = 0; i < floors; i++) {
+        type[i] = backup->type[i];
+        pending[i] = backup->pending[i];
+    }
+    floors = backup->floors;
+    preferred_dir = backup->preferred_dir;
+    position = backup->position;
+    delete backup;
 }
 

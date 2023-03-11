@@ -4,9 +4,11 @@
 
 int ElevatorController::cabins;
 CabinController* ElevatorController::cabin_controllers[10];
+int ElevatorController::first_cost_calculate;
 
 void ElevatorController::init(int cabinsArg, int floors) {
     cabins = cabinsArg;
+    first_cost_calculate = 0;
     for (int i = 1; i <= cabins; i++) {
         cabin_controllers[i] = new CabinController(i, floors);
         CommandSender::syncWhereIs(i);
@@ -37,9 +39,19 @@ void ElevatorController::emergencyStop(int cabin) {
 }
 
 int ElevatorController::lowestCost(Request request) {
+    std::cout << first_cost_calculate << " ";
+    first_cost_calculate = (first_cost_calculate % cabins) + 1;
+    std::cout << first_cost_calculate << std::endl;
     double min = std::numeric_limits<int>::max();
     int min_cabin;
-    for (int i = 1; i <= cabins; i++) {
+    for (int i = first_cost_calculate; i <= cabins; i++) {
+        double cost = cabin_controllers[i]->cost(request);
+        if (cost < min) {
+            min = cost;
+            min_cabin = i;
+        }
+    }
+    for (int i = 1; i < first_cost_calculate; i++) {
         double cost = cabin_controllers[i]->cost(request);
         if (cost < min) {
             min = cost;
