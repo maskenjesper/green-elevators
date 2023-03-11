@@ -1,8 +1,3 @@
-//
-// Created by jakobolsson on 3/10/23.
-//
-
-
 #include "CabinController.h"
 
 

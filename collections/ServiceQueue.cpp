@@ -1,8 +1,3 @@
-//
-// Created by jakobolsson on 3/8/23.
-//
-
-
 #include "ServiceQueue.h"
 
 ServiceQueue::ServiceQueue(int floors) {

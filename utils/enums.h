@@ -1,7 +1,3 @@
-//
-// Created by jakobolsson on 3/7/23.
-//
-
 #ifndef GREEN_ELEVATORS_ENUMS_H
 #define GREEN_ELEVATORS_ENUMS_H
 
