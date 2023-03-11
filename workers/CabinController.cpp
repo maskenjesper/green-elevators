@@ -80,6 +80,7 @@ double CabinController::cost(Request request) {
     pthread_mutex_lock(&lock);
     double cost = serviceQueue->cost(request);
     pthread_mutex_unlock(&lock);
+    std::cout << "The cost for cabin " << id << " was " << cost << std::endl;
     return cost;
 }
 

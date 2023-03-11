@@ -20,6 +20,7 @@ class ElevatorController {
 private:
     static int cabins;
     static CabinController* cabin_controllers[];
+    static int first_cost_calculate;
 private:
     ElevatorController();
 

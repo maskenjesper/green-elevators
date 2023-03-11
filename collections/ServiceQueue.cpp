@@ -38,7 +38,7 @@ int ServiceQueue::peek() {
                 if (pending[i] && (type[i] == NONE || type[i] == DOWN))
                     return i;
             preferred_dir = DOWN;
-            break;
+            return -1;
         case DOWN:
             for (int i = floor(position); i >= 0; i--)
                 if (pending[i] && (type[i] == NONE || type[i] == DOWN))
@@ -47,7 +47,7 @@ int ServiceQueue::peek() {
                 if (pending[i] && (type[i] == NONE || type[i] == UP))
                     return i;
             preferred_dir = UP;
-            break;
+            return floors;
         case NONE:
             for (int i = 0; i < floors; i++)
                 if (pending[i]) {
@@ -84,45 +84,37 @@ void ServiceQueue::updatePosition(double new_position) {
 }
 
 double ServiceQueue::cost(Request request) {
-//    // Saving state
-//    double position_bak = position;
-//    Direction preferred_dir_bak = preferred_dir;
-//    Request requests_bak[floors];
-//    bool pending_bak[floors];
-//    for (int i = 0; i < floors; i++) {
-//        requests_bak[i] = requests[i];
-//        pending_bak[i] = pending[i];
-//    }
-//    // Calculate cost
-//    double cost = 0;
-//    push(request);
-//    if (peek() == request.floor) {
-//        cost = fabs(position - request.floor);
-//        goto restore;
-//    }
-//    while (true) {
-//        int floor = peek();
-//        if (floor == request.floor)
-//            break;
-//        else
-//            cost += fabs(position - floor);
-//        pop();
-//        position = floor;
-//    }
-//    // Restore state
-//    restore:
-//    position = position_bak;
-//    preferred_dir = preferred_dir_bak;
-//    for (int i = 0; i < floors; i++) {
-//        requests[i] = requests_bak[i];
-//        pending[i] = pending_bak[i];
-//    }
-//    return cost;
-//    double cost = 0;
-//    for (int i = 0; i < floors; i++)
-//        if (pending[i])
-//            cost++;
-//    return cost;
-    return 0;
+    // Saving state
+    Backup* backup = new Backup(type, pending, floors, preferred_dir, position);
+    // Calculate cost
+    push(request);
+    int next_floor = peek();
+    if (next_floor >= floors || next_floor < 0)
+        next_floor = peek();
+    pop();
+    double cost = fabs(position - next_floor);
+    position = next_floor;
+    while (next_floor != request.floor) {
+        next_floor = peek();
+        if (next_floor >= floors || next_floor < 0)
+            next_floor = peek();
+        pop();
+        cost += fabs(position - next_floor);
+        position = next_floor;
+    }
+    // Restore state
+    restore(backup);
+    return cost;
+}
+
+void ServiceQueue::restore(Backup* backup) {
+    for (int i = 0; i < floors; i++) {
+        type[i] = backup->type[i];
+        pending[i] = backup->pending[i];
+    }
+    floors = backup->floors;
+    preferred_dir = backup->preferred_dir;
+    position = backup->position;
+    delete backup;
 }
 

@@ -13,15 +13,42 @@
 #include <cmath>
 #include "../structures/Request.h"
 
-class ServiceQueue {
-private:
+struct Backup {
     Direction* type;
     bool* pending;
     int floors;
     Direction preferred_dir;
     double position;
+
+    Backup(const Direction* type, const bool* pending, int floors, Direction preferred_dir, double position) {
+        this->type = new Direction[floors];
+        this->pending = new bool[floors];
+        for (int i = 0; i < floors; i++) {
+            this->type[i] = type[i];
+            this->pending[i] = pending[i];
+        }
+        this->floors = floors;
+        this->preferred_dir = preferred_dir;
+        this->position = position;
+    }
+
+    ~Backup() {
+        delete type;
+        delete pending;
+    }
+};
+
+class ServiceQueue {
+private:
+    Direction* type; // Describes the type of each request per floor
+    bool* pending; // Describes which floors have a pending request
+    int floors;
+    Direction preferred_dir; // The cabins current preferred direction to serve requests in.
+                             // Inspired from the LOOK algorithm.
+    double position;
 private:
     void print();
+    void restore(Backup* backup);
 
 public:
     explicit ServiceQueue(int floors);
