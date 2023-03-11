@@ -41,7 +41,8 @@ void *EventReceiver::worker(void *) {
                 ElevatorController::updatePosition(eventDesc.cp.cabin, eventDesc.cp.position);
                 break;
             case Speed:
-                ElevatorController::updateSpeed(eventDesc.s.speed);
+                std::cout << "speed event" << std::endl;
+                ElevatorController::updateSpeed(eventDesc.s.speed * 1000); // Convert speed to floors/sec
                 break;
             case Error:
                 std::cout << "Error event: " << eventDesc.e.str << std::endl;

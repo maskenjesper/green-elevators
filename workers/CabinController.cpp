@@ -32,8 +32,10 @@ void* CabinController::worker(void* args) {
                 }
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
+                int door_speed = (10000000 / (self->speed + 3)) ;
+                std::cout << door_speed << std::endl;
                 pthread_mutex_unlock(&self->lock);
-                sleep(3);
+                usleep(door_speed);
                 pthread_mutex_lock(&self->lock);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
             }
@@ -65,6 +67,7 @@ void CabinController::updatePosition(double new_position) {
 
 void CabinController::updateSpeed(double new_speed) {
     this->speed = new_speed;
+    std::cout << "speed updated: " << this->speed << std::endl;
 }
 
 void CabinController::emergencyStop() const {
