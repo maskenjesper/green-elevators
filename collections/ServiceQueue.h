@@ -15,7 +15,7 @@
 
 class ServiceQueue {
 private:
-    Request* requests;
+    Direction* type;
     bool* pending;
     int floors;
     Direction preferred_dir;
@@ -29,7 +29,7 @@ public:
     void push(Request request);
     int peek();
     void pop();
-    void updatePosition(double position);
+    void updatePosition(double new_position);
     bool isEmpty();
 };
 

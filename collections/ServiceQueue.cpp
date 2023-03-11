@@ -7,7 +7,7 @@
 
 ServiceQueue::ServiceQueue(int floors) {
     this->floors =  floors;
-    requests = new Request[floors];
+    type = new Direction[floors];
     pending = new bool[floors];
     for (int i = 0; i < floors; i++)
         pending[i] = false;
@@ -15,16 +15,13 @@ ServiceQueue::ServiceQueue(int floors) {
 }
 
 void ServiceQueue::push(Request request) {
-    if (isEmpty()) {
-        preferred_dir = request.direction;
-    }
     if (!pending[request.floor]) {
-        requests[request.floor] = request;
+        type[request.floor] = request.direction;
         pending[request.floor] = true;
     }
-    else if (requests[request.floor].type != DROPOFF && request.type == DROPOFF) {
+    else if (type[request.floor] != NONE && request.type == DROPOFF) {
         std::cout << "overwrite" << std::endl;
-        requests[request.floor] = request;
+        type[request.floor] = NONE;
     }
     print();
 }
@@ -34,34 +31,28 @@ int ServiceQueue::peek() {
         throw "No elements";
     switch (preferred_dir) {
         case UP:
-            for (int i = 0; i < ceil(position); i++)
-                if (pending[i] && requests[i].direction == UP)
-                    return requests[i].floor;
             for (int i = ceil(position); i < floors; i++)
-                if (pending[i] && (requests[i].direction == NONE || requests[i].direction == UP))
-                    return requests[i].floor;
+                if (pending[i] && (type[i] == NONE || type[i] == UP))
+                    return i;
+            for (int i = floors - 1; i >= ceil(position); i--)
+                if (pending[i] && (type[i] == NONE || type[i] == DOWN))
+                    return i;
             preferred_dir = DOWN;
-            for (int i = floor(position); i >= 0; i--)
-                if (pending[i] && (requests[i].direction == NONE || requests[i].direction == DOWN))
-                    return requests[i].floor;
             break;
         case DOWN:
-            for (int i = floors - 1; i > floor(position); i--)
-                if (pending[i] && requests[i].direction == DOWN)
-                    return requests[i].floor;
             for (int i = floor(position); i >= 0; i--)
-                if (pending[i] && (requests[i].direction == NONE || requests[i].direction == DOWN))
-                    return requests[i].floor;
+                if (pending[i] && (type[i] == NONE || type[i] == DOWN))
+                    return i;
+            for (int i = 0; i <= floor(position); i++)
+                if (pending[i] && (type[i] == NONE || type[i] == UP))
+                    return i;
             preferred_dir = UP;
-            for (int i = ceil(position); i < floors; i++)
-                if (pending[i] && (requests[i].direction == NONE || requests[i].direction == UP))
-                    return requests[i].floor;
             break;
         case NONE:
             for (int i = 0; i < floors; i++)
                 if (pending[i]) {
-                    preferred_dir = requests[i].floor < position ? DOWN : UP;
-                    return requests[i].floor;
+                    preferred_dir = i < position ? DOWN : UP;
+                    return i;
                 }
             break;
     }
@@ -88,8 +79,8 @@ void ServiceQueue::print() {
     std::cout << pending[floors - 1] << "]" << std::endl;
 }
 
-void ServiceQueue::updatePosition(double position) {
-    this->position = position;
+void ServiceQueue::updatePosition(double new_position) {
+    this->position = new_position;
 }
 
 double ServiceQueue::cost(Request request) {
@@ -127,10 +118,11 @@ double ServiceQueue::cost(Request request) {
 //        pending[i] = pending_bak[i];
 //    }
 //    return cost;
-    double cost = 0;
-    for (int i = 0; i < floors; i++)
-        if (pending[i])
-            cost++;
-    return cost;
+//    double cost = 0;
+//    for (int i = 0; i < floors; i++)
+//        if (pending[i])
+//            cost++;
+//    return cost;
+    return 0;
 }
 
