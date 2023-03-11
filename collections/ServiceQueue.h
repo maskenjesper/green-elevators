@@ -1,7 +1,3 @@
-//
-// Created by jakobolsson on 3/8/23.
-//
-
 #ifndef GREEN_ELEVATORS_SERVICEQUEUE_H
 #define GREEN_ELEVATORS_SERVICEQUEUE_BAK_H
 
