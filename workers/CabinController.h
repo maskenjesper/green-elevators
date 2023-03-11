@@ -19,8 +19,7 @@ private:
     double position;
     int scale;
     double speed;
-    ServiceQueue* stops;
-    Direction direction;
+    ServiceQueue* serviceQueue;
 private:
     static void* worker(void* args);
 
@@ -28,9 +27,9 @@ public:
     CabinController(int id, int floors);
     ~CabinController();
     void addStop(Request request);
-    void updatePosition(double position);
-    void updateSpeed(double speed);
-    void emergencyStop();
+    void updatePosition(double new_position);
+    void updateSpeed(double new_speed);
+    void emergencyStop() const;
     double cost(Request request);
 };
 

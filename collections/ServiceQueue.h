@@ -13,32 +13,23 @@
 #include <cmath>
 #include "../structures/Request.h"
 
-struct Node {
-    int value;
-    Node* next;
-    Node* prev;
-
-    Node(int value, Node* next, Node* prev) {
-        this->value = value;
-        this->next = next;
-        this->prev = prev;
-    }
-};
-
 class ServiceQueue {
 private:
     Request* requests;
     bool* pending;
     int floors;
+    Direction preferred_dir;
+    double position;
 private:
     void print();
 
 public:
-    ServiceQueue(int floors);
-    double cost(Request request, double current_pos, Direction current_dir);
+    explicit ServiceQueue(int floors);
+    double cost(Request request);
     void push(Request request);
-    int peek(double current_pos, Direction current_dir);
-    void pop(double current_pos, Direction current_dir);
+    int peek();
+    void pop();
+    void updatePosition(double position);
     bool isEmpty();
 };
 

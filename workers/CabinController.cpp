@@ -12,36 +12,28 @@ CabinController::CabinController(int id, int floors) {
     pthread_cond_init(&cond, nullptr);
     position = 0;
     scale = 0;
-    direction = NONE;
-    stops = new ServiceQueue(floors);
+    serviceQueue = new ServiceQueue(floors);
     pthread_create(&tid, nullptr, worker, this);
 }
 
 CabinController::~CabinController() {
     pthread_join(tid, nullptr);
-    delete stops;
+    delete serviceQueue;
 }
 
 void* CabinController::worker(void* args) {
     auto self = (CabinController*) args;
     pthread_mutex_lock(&self->lock);
     while (true) {
-        if (!self->stops->isEmpty()) {
-            if (self->stops->peek(self->position, self->direction) == -1) {
-                self->direction = self->direction == UP ? DOWN : UP;
-            }
-            else if (self->position < self->stops->peek(self->position, self->direction) - 0.05) {
-                self->direction = UP;
+        if (!self->serviceQueue->isEmpty()) {
+            if (self->position < self->serviceQueue->peek() - 0.06)
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorUp);
-            }
-            else if (self->position > self->stops->peek(self->position, self->direction) + 0.05) {
-                self->direction = DOWN;
+            else if (self->position > self->serviceQueue->peek() + 0.06)
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorDown);
-            }
             else {
-                if (!self->stops->isEmpty()) {
+                if (!self->serviceQueue->isEmpty()) {
                     std::cout << self->id << " pop:\t";
-                    self->stops->pop(self->position, self->direction);
+                    self->serviceQueue->pop();
                 }
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
@@ -51,8 +43,6 @@ void* CabinController::worker(void* args) {
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
             }
         }
-        else
-            self->direction = NONE;
         pthread_cond_wait(&self->cond, &self->lock);
     }
     pthread_mutex_unlock(&self->lock);
@@ -61,34 +51,34 @@ void* CabinController::worker(void* args) {
 void CabinController::addStop(Request request) {
     pthread_mutex_lock(&lock);
     std::cout << this->id << " push:\t";
-    stops->push(request);
+    serviceQueue->push(request);
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&lock);
 }
 
-void CabinController::updatePosition(double position) {
-
+void CabinController::updatePosition(double new_position) {
     pthread_mutex_lock(&lock);
-    this->position = position;
-    if (scale != (int) round(position)) {
-        scale = (int) round(position);
-        CommandSender::syncHandleScale(id, (int) round(position));
+    this->position = new_position;
+    if (scale != (int) round(new_position)) {
+        scale = (int) round(new_position);
+        CommandSender::syncHandleScale(id, (int) round(new_position));
     }
+    serviceQueue->updatePosition(new_position);
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&lock);
 }
 
-void CabinController::updateSpeed(double speed) {
-    this->speed = speed;
+void CabinController::updateSpeed(double new_speed) {
+    this->speed = new_speed;
 }
 
-void CabinController::emergencyStop() {
+void CabinController::emergencyStop() const {
     CommandSender::syncHandleMotor(id, MotorAction::MotorStop);
 }
 
 double CabinController::cost(Request request) {
     pthread_mutex_lock(&lock);
-    double cost = stops->cost(request, position, direction);
+    double cost = serviceQueue->cost(request);
     pthread_mutex_unlock(&lock);
     return cost;
 }
