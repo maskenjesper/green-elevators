@@ -36,9 +36,13 @@ void* CabinController::worker(void* args) {
                 pthread_mutex_unlock(&self->lock);
 
                 double sleepAmount = self->speed*1000;
-                //std:: cout<<"SPEED:"<<sleepAmount<<std::endl;
+                std:: cout<<"SPEED:"<<sleepAmount<<std::endl;
                 double doorWaitingTime= self->calculateTimeForDoors(sleepAmount);
-                //std::cout<<"CALCULATED SPEED;"<<doorWaitingTime << std::endl;
+                std::cout<<"CALCULATED SPEED;"<<doorWaitingTime << std::endl;
+
+                if(doorWaitingTime > 6000000){
+                    std::cout<<"ERROR TOO BIG" << std::endl;
+                }
 
                 usleep(doorWaitingTime);
                 pthread_mutex_lock(&self->lock);
@@ -54,7 +58,10 @@ void* CabinController::worker(void* args) {
 
 double CabinController::calculateTimeForDoors(double floorsPerSecond) {
     double doorWaitingTime = (274.988 - (582.958 * floorsPerSecond)) + ((77.5593)*(floorsPerSecond*floorsPerSecond)) - ((269.26)* (cos(floorsPerSecond))) +  ((527.324) *(floorsPerSecond * cos(floorsPerSecond)));
-    double doorWaitingTimeConvertedToMicroSec = doorWaitingTime * 1000000;
+    double doorWaitingTimeConvertedToMicroSec = abs(doorWaitingTime * 1000000);
+    if(floorsPerSecond > 0.39){
+        return 500000;
+    }
     return doorWaitingTimeConvertedToMicroSec;
 }
 
