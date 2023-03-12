@@ -44,6 +44,7 @@ void* CabinController::worker(void* args) {
                 pthread_mutex_lock(&self->lock);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
             }
+
         }
         pthread_cond_wait(&self->cond, &self->lock);
     }
