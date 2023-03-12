@@ -1,5 +1,6 @@
 #include "CabinController.h"
 
+#include <cmath>
 
 CabinController::CabinController(int id, int floors) {
     this->id = id;
@@ -33,7 +34,13 @@ void* CabinController::worker(void* args) {
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
                 pthread_mutex_unlock(&self->lock);
-                sleep(3);
+
+                double sleepAmount = self->speed*1000;
+                //std:: cout<<"SPEED:"<<sleepAmount<<std::endl;
+                double doorWaitingTime= self->calculateTimeForDoors(sleepAmount);
+                //std::cout<<"CALCULATED SPEED;"<<doorWaitingTime << std::endl;
+
+                usleep(doorWaitingTime);
                 pthread_mutex_lock(&self->lock);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
             }
@@ -41,6 +48,13 @@ void* CabinController::worker(void* args) {
         pthread_cond_wait(&self->cond, &self->lock);
     }
     pthread_mutex_unlock(&self->lock);
+}
+
+
+double CabinController::calculateTimeForDoors(double floorsPerSecond) {
+    double doorWaitingTime = (274.988 - (582.958 * floorsPerSecond)) + ((77.5593)*(floorsPerSecond*floorsPerSecond)) - ((269.26)* (cos(floorsPerSecond))) +  ((527.324) *(floorsPerSecond * cos(floorsPerSecond)));
+    double doorWaitingTimeConvertedToMicroSec = doorWaitingTime * 1000000;
+    return doorWaitingTimeConvertedToMicroSec;
 }
 
 void CabinController::addStop(Request request) {
@@ -78,4 +92,6 @@ double CabinController::cost(Request request) {
     std::cout << "The cost for cabin " << id << " was " << cost << std::endl;
     return cost;
 }
+
+
 

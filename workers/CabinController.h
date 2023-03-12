@@ -27,6 +27,8 @@ public:
     void updateSpeed(double new_speed);
     void emergencyStop() const;
     double cost(Request request);
+    double calculateTimeForDoors(double floorsPerSecond);
+
 };
 
 
