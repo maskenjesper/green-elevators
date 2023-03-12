@@ -55,12 +55,14 @@ void* CabinController::worker(void* args) {
     pthread_mutex_unlock(&self->lock);
 }
 
-
 double CabinController::calculateTimeForDoors(double floorsPerSecond) {
     double doorWaitingTime = (274.988 - (582.958 * floorsPerSecond)) + ((77.5593)*(floorsPerSecond*floorsPerSecond)) - ((269.26)* (cos(floorsPerSecond))) +  ((527.324) *(floorsPerSecond * cos(floorsPerSecond)));
     double doorWaitingTimeConvertedToMicroSec = abs(doorWaitingTime * 1000000);
     if(floorsPerSecond > 0.39){
         return 500000;
+    }
+    if(doorWaitingTimeConvertedToMicroSec > 6000000){
+        return 4000000;
     }
     return doorWaitingTimeConvertedToMicroSec;
 }
