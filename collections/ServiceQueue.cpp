@@ -88,7 +88,7 @@ double ServiceQueue::cost(Request request) {
     double cost = fabs(position - next_floor);
     if (type[request.floor] == UP && request.direction == DOWN
              || type[request.floor] == DOWN && request.direction == UP) {
-        cost += 1;
+        cost += 10;
     }
     position = next_floor;
     while (next_floor != request.floor) {
