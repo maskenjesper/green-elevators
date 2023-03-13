@@ -102,6 +102,10 @@ double ServiceQueue::cost(Request request) {
     // Calculate cost
     push(request);
     int next_floor = peek(); pop();
+    if (type[next_floor] == UP)
+        push(Request(floors - 1, 1, NONE, DROPOFF));
+    else if (type[next_floor] == DOWN)
+        push(Request(0, 1, NONE, DROPOFF));
     double cost = fabs(position - next_floor);
     if (type[request.floor] == UP && request.direction == DOWN
              || type[request.floor] == DOWN && request.direction == UP) {
@@ -111,9 +115,9 @@ double ServiceQueue::cost(Request request) {
     while (next_floor != request.floor) {
         next_floor = peek(); pop();
         if (type[next_floor] == UP)
-            cost += fabs(next_floor - floors - 1);
+            push(Request(floors - 1, 1, NONE, DROPOFF));
         else if (type[next_floor] == DOWN)
-            cost += fabs(next_floor);
+            push(Request(0, 1, NONE, DROPOFF));
         cost += fabs(position - next_floor);
         position = next_floor;
     }
