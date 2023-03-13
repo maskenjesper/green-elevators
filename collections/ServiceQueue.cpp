@@ -18,7 +18,6 @@ void ServiceQueue::push(Request request) {
         std::cout << "overwrite" << std::endl;
         type[request.floor] = NONE;
     }
-    print();
 }
 
 int ServiceQueue::peek() {
@@ -57,7 +56,6 @@ void ServiceQueue::pop() {
     pending[peek()] = false;
     if (isEmpty())
         preferred_dir = NONE;
-    print();
 }
 
 bool ServiceQueue::isEmpty() {

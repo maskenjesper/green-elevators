@@ -43,10 +43,10 @@ private:
                              // Inspired from the LOOK algorithm.
     double position;
 private:
-    void print();
     void restore(Backup* backup);
 
 public:
+    void print();
     explicit ServiceQueue(int floors);
     double cost(Request request);
     void push(Request request);

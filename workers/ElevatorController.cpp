@@ -32,6 +32,7 @@ void ElevatorController::updatePosition(int cabin, double position) {
 void ElevatorController::updateSpeed(double speed) {
     for (int i = 1; i <= cabins; i++)
         cabin_controllers[i]->updateSpeed(speed);
+    std::cout << "Speed updated: " << speed << std::endl;
 }
 
 void ElevatorController::emergencyStop(int cabin) {
@@ -39,25 +40,29 @@ void ElevatorController::emergencyStop(int cabin) {
 }
 
 int ElevatorController::lowestCost(Request request) {
-    std::cout << first_cost_calculate << " ";
     first_cost_calculate = (first_cost_calculate % cabins) + 1;
-    std::cout << first_cost_calculate << std::endl;
     double min = std::numeric_limits<int>::max();
     int min_cabin;
+    std::cout << "Costs: [";
     for (int i = first_cost_calculate; i <= cabins; i++) {
+        std::cout << i << ":";
         double cost = cabin_controllers[i]->cost(request);
+        std::cout << " ";
         if (cost < min) {
             min = cost;
             min_cabin = i;
         }
     }
     for (int i = 1; i < first_cost_calculate; i++) {
+        std::cout << i << ":";
         double cost = cabin_controllers[i]->cost(request);
+        std::cout << " ";
         if (cost < min) {
             min = cost;
             min_cabin = i;
         }
     }
+    std::cout << "]" << std::endl;
     return min_cabin;
 }
 
