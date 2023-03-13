@@ -32,10 +32,11 @@ void* CabinController::worker(void* args) {
                 }
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
-                int door_speed = (10000000 / (self->speed + 3)) ;
+                // Calculate door speed in seconds
+                double door_speed = (1 / (self->speed + 0.5)) + 0.4;
                 std::cout << door_speed << std::endl;
                 pthread_mutex_unlock(&self->lock);
-                usleep(door_speed);
+                usleep((unsigned int) (door_speed * 1000000));
                 pthread_mutex_lock(&self->lock);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorClose);
             }
