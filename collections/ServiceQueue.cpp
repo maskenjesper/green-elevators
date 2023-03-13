@@ -107,10 +107,6 @@ double ServiceQueue::cost(Request request) {
     else if (type[next_floor] == DOWN)
         push(Request(0, 1, NONE, DROPOFF));
     double cost = fabs(position - next_floor);
-    if (type[request.floor] == UP && request.direction == DOWN
-             || type[request.floor] == DOWN && request.direction == UP) {
-        cost += 10;
-    }
     position = next_floor;
     while (next_floor != request.floor) {
         next_floor = peek(); pop();
