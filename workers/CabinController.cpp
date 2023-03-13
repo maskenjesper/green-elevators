@@ -68,7 +68,9 @@ void CabinController::updatePosition(double new_position) {
 }
 
 void CabinController::updateSpeed(double new_speed) {
+    pthread_mutex_lock(&lock);
     this->speed = new_speed;
+    pthread_mutex_unlock(&lock);
 }
 
 void CabinController::emergencyStop() const {
