@@ -23,6 +23,35 @@ void ServiceQueue::push(Request request) {
 int ServiceQueue::peek() {
     if (isEmpty())
         throw "No elements";
+    int next_floor;
+    switch (preferred_dir) {
+        case UP:
+            next_floor = checkForRequest();
+            if (next_floor == -1) {
+                preferred_dir = DOWN;
+                return checkForRequest();
+            }
+            else
+                return next_floor;
+        case DOWN:
+            next_floor = checkForRequest();
+            if (next_floor == -1) {
+                preferred_dir = UP;
+                return checkForRequest();
+            }
+            else
+                return next_floor;
+        case NONE:
+            for (int i = 0; i < floors; i++)
+                if (pending[i]) {
+                    preferred_dir = i < position ? DOWN : UP;
+                    return i;
+                }
+            break;
+    }
+}
+
+int ServiceQueue::checkForRequest() {
     switch (preferred_dir) {
         case UP:
             for (int i = ceil(position); i < floors; i++)
@@ -31,7 +60,6 @@ int ServiceQueue::peek() {
             for (int i = floors - 1; i >= ceil(position); i--)
                 if (pending[i] && (type[i] == NONE || type[i] == DOWN))
                     return i;
-            preferred_dir = DOWN;
             return -1;
         case DOWN:
             for (int i = floor(position); i >= 0; i--)
@@ -40,15 +68,7 @@ int ServiceQueue::peek() {
             for (int i = 0; i <= floor(position); i++)
                 if (pending[i] && (type[i] == NONE || type[i] == UP))
                     return i;
-            preferred_dir = UP;
-            return floors;
-        case NONE:
-            for (int i = 0; i < floors; i++)
-                if (pending[i]) {
-                    preferred_dir = i < position ? DOWN : UP;
-                    return i;
-                }
-            break;
+            return -1;
     }
 }
 
@@ -81,10 +101,7 @@ double ServiceQueue::cost(Request request) {
     Backup* backup = new Backup(type, pending, floors, preferred_dir, position);
     // Calculate cost
     push(request);
-    int next_floor = peek();
-    if (next_floor >= floors || next_floor < 0)
-        next_floor = peek();
-    pop();
+    int next_floor = peek(); pop();
     double cost = fabs(position - next_floor);
     if (type[request.floor] == UP && request.direction == DOWN
              || type[request.floor] == DOWN && request.direction == UP) {

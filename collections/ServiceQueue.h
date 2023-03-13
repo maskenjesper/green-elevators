@@ -44,6 +44,7 @@ private:
     double position;
 private:
     void restore(Backup* backup);
+    int checkForRequest();
 
 public:
     void print();
