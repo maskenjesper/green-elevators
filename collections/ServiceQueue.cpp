@@ -110,6 +110,10 @@ double ServiceQueue::cost(Request request) {
     position = next_floor;
     while (next_floor != request.floor) {
         next_floor = peek(); pop();
+        if (type[next_floor] == UP)
+            cost += fabs(next_floor - floors - 1);
+        else if (type[next_floor] == DOWN)
+            cost += fabs(next_floor);
         cost += fabs(position - next_floor);
         position = next_floor;
     }
