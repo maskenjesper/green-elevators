@@ -29,12 +29,12 @@ void* CabinController::worker(void* args) {
                 if (!self->serviceQueue->isEmpty()) {
                     std::cout << self->id << " pop:\t";
                     self->serviceQueue->pop();
+                    self->serviceQueue->print();
                 }
                 CommandSender::syncHandleMotor(self->id, MotorAction::MotorStop);
                 CommandSender::syncHandleDoor(self->id, DoorAction::DoorOpen);
                 // Calculate door speed in seconds
                 double door_speed = (1 / (self->speed + 0.5)) + 0.4;
-                std::cout << door_speed << std::endl;
                 pthread_mutex_unlock(&self->lock);
                 usleep((unsigned int) (door_speed * 1000000));
                 pthread_mutex_lock(&self->lock);
@@ -50,6 +50,7 @@ void CabinController::addStop(Request request) {
     pthread_mutex_lock(&lock);
     std::cout << this->id << " push:\t";
     serviceQueue->push(request);
+    serviceQueue->print();
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&lock);
 }
@@ -68,7 +69,6 @@ void CabinController::updatePosition(double new_position) {
 
 void CabinController::updateSpeed(double new_speed) {
     this->speed = new_speed;
-    std::cout << "speed updated: " << this->speed << std::endl;
 }
 
 void CabinController::emergencyStop() const {
@@ -79,7 +79,7 @@ double CabinController::cost(Request request) {
     pthread_mutex_lock(&lock);
     double cost = serviceQueue->cost(request);
     pthread_mutex_unlock(&lock);
-    std::cout << "The cost for cabin " << id << " was " << cost << std::endl;
+    std::cout << cost;
     return cost;
 }
 
